@@ -5,6 +5,7 @@ import "./styles.css";
 const navItems = [
 	{ href: "/", label: "Overview" },
 	{ href: "/features", label: "Features" },
+	{ href: "/use-cases", label: "Use cases" },
 	{ href: "/local-models", label: "Local models" },
 	{ href: "/download", label: "Download" },
 ];
@@ -92,6 +93,45 @@ const architectureLayers = [
 	["Memory", "plan.md, notes.md, compacted context, chat history."],
 ];
 
+const useCases = [
+	[
+		"Research-grade project execution",
+		"Turn an open-ended research goal into scoped worker tasks, verification loops, and persistent project memory.",
+		"https://images.pexels.com/photos/34804002/pexels-photo-34804002.jpeg?auto=compress&cs=tinysrgb&w=1200",
+		["Manager decomposes the research plan", "Workers inspect, implement, test, and review", "plan.md keeps decisions after context compaction"],
+	],
+	[
+		"Long LaTeX writing sessions",
+		"Edit source, compile PDFs, navigate outlines, and keep the manager aware of paper structure without leaving the workspace.",
+		"https://images.pexels.com/photos/12899153/pexels-photo-12899153.jpeg?auto=compress&cs=tinysrgb&w=1200",
+		["LaTeX editor, files, figures, outline, and PDF preview", "Compile progress and logs stay visible", "Notes preserve reviewer comments and paper decisions"],
+	],
+	[
+		"Codebase migration and cleanup",
+		"Assign parallel workers to isolated modules while the manager keeps scope, acceptance checks, and follow-through in one place.",
+		"https://images.pexels.com/photos/5926382/pexels-photo-5926382.jpeg?auto=compress&cs=tinysrgb&w=1200",
+		["Runtime workers patch bounded areas", "Review workers verify changed behavior", "Retries only happen after reported worker errors"],
+	],
+	[
+		"Release and installer validation",
+		"Use browser, terminal, Git review, and workflow history to verify a release path before handing binaries to testers.",
+		"https://images.pexels.com/photos/12903173/pexels-photo-12903173.jpeg?auto=compress&cs=tinysrgb&w=1200",
+		["Local preview and route verification", "GitHub diff and CI review", "Installer link and release notes tracked as explicit checks"],
+	],
+	[
+		"Local model workstations",
+		"Route routine worker tasks to local Ollama or OpenAI-compatible servers while reserving stronger cloud models for manager planning.",
+		"https://images.pexels.com/photos/1148820/pexels-photo-1148820.jpeg?auto=compress&cs=tinysrgb&w=1200",
+		["Manager and worker model routing", "Ollama, LM Studio, llama.cpp, and vLLM support", "Token usage remains visible during the run"],
+	],
+	[
+		"Agent-visible browser workflows",
+		"Let agents inspect local previews, capture screenshots, and report UI problems without turning the browser into hidden state.",
+		"https://images.pexels.com/photos/12899185/pexels-photo-12899185.jpeg?auto=compress&cs=tinysrgb&w=1200",
+		["Browser panel for preview work", "Screenshot-backed verification", "Workflow feed records what was checked"],
+	],
+];
+
 const localProviders = [
 	["Ollama", "http://localhost:11434", "phi3, qwen2.5-coder, llama3.2"],
 	["LM Studio", "http://localhost:1234/v1", "OpenAI-compatible local server"],
@@ -109,6 +149,7 @@ const releaseHighlights = [
 function routeFromLocation() {
 	const path = window.location.pathname.replace(/\/+$/, "") || "/";
 	if (path === "/features") return "features";
+	if (path === "/use-cases") return "useCases";
 	if (path === "/local-models") return "local";
 	if (path === "/download") return "download";
 	return "home";
@@ -138,6 +179,7 @@ function useRoute() {
 function isRouteActive(route, href) {
 	if (href === "/" && route === "home") return true;
 	if (href === "/features" && route === "features") return true;
+	if (href === "/use-cases" && route === "useCases") return true;
 	if (href === "/local-models" && route === "local") return true;
 	return href === "/download" && route === "download";
 }
@@ -493,6 +535,42 @@ function Features() {
 	);
 }
 
+function UseCases() {
+	return (
+		<>
+			<section className="page-section use-cases-page">
+				<div className="page-heading">
+					<p className="eyebrow">Use cases</p>
+					<h1>Where manager-led agents hold up under real project pressure.</h1>
+					<p>
+						Stratum is designed for work that needs planning, execution, verification, and memory across long runs instead of one-off chat responses.
+					</p>
+				</div>
+				<div className="use-case-grid">
+					{useCases.map(([title, body, image, checks], index) => (
+						<article key={title} className="use-case-card">
+							<img src={image} alt="" />
+							<div>
+								<b>{String(index + 1).padStart(2, "0")}</b>
+								<h2>{title}</h2>
+								<p>{body}</p>
+								<div className="use-case-checks">
+									{checks.map((check) => (
+										<span key={check}>{check}</span>
+									))}
+								</div>
+							</div>
+						</article>
+					))}
+				</div>
+			</section>
+			<RunLifecycle />
+			<ScreenshotEvidence />
+			<DownloadCTA />
+		</>
+	);
+}
+
 function LocalModels() {
 	return (
 		<section className="page-section local-page">
@@ -569,6 +647,7 @@ function App() {
 			<main>
 				{route === "home" ? <Home onNavigate={navigate} /> : null}
 				{route === "features" ? <Features /> : null}
+				{route === "useCases" ? <UseCases /> : null}
 				{route === "local" ? <LocalModels /> : null}
 				{route === "download" ? <Download /> : null}
 			</main>

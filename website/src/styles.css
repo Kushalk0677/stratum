@@ -953,14 +953,16 @@ p {
 }
 
 .surface-matrix,
-.feature-grid {
+.feature-grid,
+.use-case-grid {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 	gap: 16px;
 }
 
 .surface-card,
-.feature-card {
+.feature-card,
+.use-case-card {
 	display: grid;
 	align-content: start;
 	gap: 14px;
@@ -985,8 +987,82 @@ p {
 }
 
 .surface-card p,
-.feature-card p {
+.feature-card p,
+.use-case-card p {
 	margin: 0;
+}
+
+.use-cases-page {
+	background:
+		linear-gradient(90deg, rgba(15, 23, 42, 0.028) 1px, transparent 1px),
+		linear-gradient(180deg, rgba(15, 23, 42, 0.024) 1px, transparent 1px),
+		#ffffff;
+	background-size: 56px 56px;
+}
+
+.use-case-card {
+	overflow: hidden;
+	padding: 0;
+	border: 1px solid #d8dee9;
+	border-radius: 10px;
+	background: #ffffff;
+	box-shadow: 0 14px 34px rgba(15, 23, 42, 0.07);
+}
+
+.use-case-card > img {
+	width: 100%;
+	height: 190px;
+	object-fit: cover;
+	filter: saturate(0.86) contrast(1.02);
+}
+
+.use-case-card > div {
+	display: grid;
+	gap: 12px;
+	padding: 20px;
+}
+
+.use-case-card b {
+	color: #174ea6;
+	font-family: "Cascadia Mono", Consolas, monospace;
+	font-size: 13px;
+}
+
+.use-case-card h2 {
+	margin: 0;
+	color: #111827;
+	font-size: 24px;
+	line-height: 1.08;
+}
+
+.use-case-card p {
+	color: #4b5563;
+	line-height: 1.5;
+}
+
+.use-case-checks {
+	display: grid;
+	gap: 8px;
+	margin-top: 4px;
+}
+
+.use-case-checks span {
+	position: relative;
+	padding-left: 18px;
+	color: #475569;
+	font-size: 13px;
+	line-height: 1.45;
+}
+
+.use-case-checks span::before {
+	position: absolute;
+	top: 0.6em;
+	left: 0;
+	width: 7px;
+	height: 7px;
+	border-radius: 999px;
+	background: #2563eb;
+	content: "";
 }
 
 .architecture-section {
@@ -1385,6 +1461,7 @@ footer {
 	.lifecycle-grid,
 	.surface-matrix,
 	.feature-grid,
+	.use-case-grid,
 	.evidence-grid,
 	.download-cta,
 	.local-layout {

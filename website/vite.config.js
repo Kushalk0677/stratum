@@ -13,6 +13,7 @@ export default defineConfig({
 			input: {
 				main: resolve(__dirname, "index.html"),
 				features: resolve(__dirname, "features/index.html"),
+				useCases: resolve(__dirname, "use-cases/index.html"),
 				localModels: resolve(__dirname, "local-models/index.html"),
 				download: resolve(__dirname, "download/index.html"),
 			},
