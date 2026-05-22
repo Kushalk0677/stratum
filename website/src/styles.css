@@ -1040,6 +1040,29 @@ p {
 	line-height: 1.5;
 }
 
+.use-case-example {
+	display: grid;
+	gap: 5px;
+	padding: 12px;
+	border: 1px solid #e1e6ef;
+	border-radius: 8px;
+	background: #f8fafc;
+}
+
+.use-case-example strong {
+	color: #174ea6;
+	font-size: 11px;
+	font-weight: 850;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.use-case-example span {
+	color: #334155;
+	font-size: 13px;
+	line-height: 1.45;
+}
+
 .use-case-checks {
 	display: grid;
 	gap: 8px;
@@ -1063,6 +1086,47 @@ p {
 	border-radius: 999px;
 	background: #2563eb;
 	content: "";
+}
+
+.comparison-section {
+	background: #0f172a;
+	color: #ffffff;
+}
+
+.comparison-section .section-heading h2,
+.comparison-section .section-heading p:not(.eyebrow) {
+	color: #ffffff;
+}
+
+.comparison-grid {
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	gap: 1px;
+	overflow: hidden;
+	border: 1px solid rgba(203, 213, 225, 0.18);
+	border-radius: 10px;
+	background: rgba(203, 213, 225, 0.18);
+}
+
+.comparison-grid article {
+	display: grid;
+	align-content: start;
+	gap: 12px;
+	min-height: 230px;
+	padding: 20px;
+	background: #111c31;
+}
+
+.comparison-grid strong {
+	color: #ffffff;
+	font-size: 18px;
+	line-height: 1.15;
+}
+
+.comparison-grid p {
+	margin: 0;
+	color: #cbd5e1;
+	line-height: 1.5;
 }
 
 .architecture-section {
@@ -1434,6 +1498,10 @@ footer {
 	.architecture-stack {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
+
+	.comparison-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
 }
 
 @media (max-width: 920px) {
@@ -1510,6 +1578,7 @@ footer {
 
 	.task-grid,
 	.architecture-stack,
+	.comparison-grid,
 	.provider-row {
 		grid-template-columns: 1fr;
 	}

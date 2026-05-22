@@ -99,37 +99,57 @@ const useCases = [
 		"Turn an open-ended research goal into scoped worker tasks, verification loops, and persistent project memory.",
 		"https://images.pexels.com/photos/34804002/pexels-photo-34804002.jpeg?auto=compress&cs=tinysrgb&w=1200",
 		["Manager decomposes the research plan", "Workers inspect, implement, test, and review", "plan.md keeps decisions after context compaction"],
+		"Build a publishable cache-reuse benchmark, write the paper outline, and keep experiments reproducible.",
+		"The manager splits literature review, baseline implementation, benchmark runs, LaTeX drafting, and review into separate workers, then writes accepted decisions into project memory.",
 	],
 	[
 		"Long LaTeX writing sessions",
 		"Edit source, compile PDFs, navigate outlines, and keep the manager aware of paper structure without leaving the workspace.",
 		"https://images.pexels.com/photos/12899153/pexels-photo-12899153.jpeg?auto=compress&cs=tinysrgb&w=1200",
 		["LaTeX editor, files, figures, outline, and PDF preview", "Compile progress and logs stay visible", "Notes preserve reviewer comments and paper decisions"],
+		"Convert experiment notes into a conference-style LaTeX paper with figures, citations, and a clean compile.",
+		"The manager assigns a writing worker, a figure/log checker, and a review worker while the LaTeX surface exposes source, outline, compile progress, and PDF output.",
 	],
 	[
 		"Codebase migration and cleanup",
 		"Assign parallel workers to isolated modules while the manager keeps scope, acceptance checks, and follow-through in one place.",
 		"https://images.pexels.com/photos/5926382/pexels-photo-5926382.jpeg?auto=compress&cs=tinysrgb&w=1200",
 		["Runtime workers patch bounded areas", "Review workers verify changed behavior", "Retries only happen after reported worker errors"],
+		"Migrate a prototype into typed modules, preserve behavior, and remove dead paths without losing intent.",
+		"The manager creates bounded work packets per module, workers patch independently, and review workers inspect diffs before the manager accepts the run.",
 	],
 	[
 		"Release and installer validation",
 		"Use browser, terminal, Git review, and workflow history to verify a release path before handing binaries to testers.",
 		"https://images.pexels.com/photos/12903173/pexels-photo-12903173.jpeg?auto=compress&cs=tinysrgb&w=1200",
 		["Local preview and route verification", "GitHub diff and CI review", "Installer link and release notes tracked as explicit checks"],
+		"Build a Windows installer, verify the download page, and check that the release asset resolves for testers.",
+		"The manager drives terminal build checks, browser route checks, GitHub diff review, and release notes verification as one auditable workflow.",
 	],
 	[
 		"Local model workstations",
 		"Route routine worker tasks to local Ollama or OpenAI-compatible servers while reserving stronger cloud models for manager planning.",
 		"https://images.pexels.com/photos/1148820/pexels-photo-1148820.jpeg?auto=compress&cs=tinysrgb&w=1200",
 		["Manager and worker model routing", "Ollama, LM Studio, llama.cpp, and vLLM support", "Token usage remains visible during the run"],
+		"Use a local coding model for worker edits while a stronger manager model plans and reviews expensive decisions.",
+		"Stratum keeps model routing visible, tracks token use, and lets routine workers run locally while the manager remains responsible for orchestration.",
 	],
 	[
 		"Agent-visible browser workflows",
 		"Let agents inspect local previews, capture screenshots, and report UI problems without turning the browser into hidden state.",
 		"https://images.pexels.com/photos/12899185/pexels-photo-12899185.jpeg?auto=compress&cs=tinysrgb&w=1200",
 		["Browser panel for preview work", "Screenshot-backed verification", "Workflow feed records what was checked"],
+		"Ask an agent to open a local preview, inspect a route, capture a screenshot, and report layout defects.",
+		"The browser worker verifies the page visually, the manager records the finding, and the runtime worker receives a scoped UI fix instead of a vague follow-up.",
 	],
+];
+
+const chatOnlyLimits = [
+	["No durable project memory by default", "A normal GPT or Claude chat can summarize, but it does not automatically maintain plan.md, notes.md, compacted context, and project-scoped chat history inside your folder."],
+	["No visible multi-worker control plane", "A single model conversation does not give you separate manager, runtime, review, browser, and test lanes with statuses and handoff history."],
+	["No built-in run envelope", "Chat-only workflows do not natively show context use, token totals, retry policy, worker failures, and completed tool events as part of one workspace."],
+	["No dedicated technical surfaces", "You still have to stitch together terminal, browser screenshots, Git diff review, LaTeX compile output, file tree, notes, and todos yourself."],
+	["No manager-only retry discipline", "Stratum retries failed subtasks only when a worker reports an error, server busy state, or token limit instead of blindly resending every response."],
 ];
 
 const localProviders = [
@@ -547,13 +567,21 @@ function UseCases() {
 					</p>
 				</div>
 				<div className="use-case-grid">
-					{useCases.map(([title, body, image, checks], index) => (
+					{useCases.map(([title, body, image, checks, example, agentPath], index) => (
 						<article key={title} className="use-case-card">
 							<img src={image} alt="" />
 							<div>
 								<b>{String(index + 1).padStart(2, "0")}</b>
 								<h2>{title}</h2>
 								<p>{body}</p>
+								<section className="use-case-example">
+									<strong>Example task</strong>
+									<span>{example}</span>
+								</section>
+								<section className="use-case-example">
+									<strong>How Stratum solves it</strong>
+									<span>{agentPath}</span>
+								</section>
 								<div className="use-case-checks">
 									{checks.map((check) => (
 										<span key={check}>{check}</span>
@@ -564,9 +592,25 @@ function UseCases() {
 					))}
 				</div>
 			</section>
-			<RunLifecycle />
-			<ScreenshotEvidence />
-			<DownloadCTA />
+			<section className="section comparison-section">
+				<div className="section-heading split-heading">
+					<div>
+						<p className="eyebrow">Why not just chat?</p>
+						<h2>GPT and Claude are models. Stratum is the workspace around the run.</h2>
+					</div>
+					<p>
+						A strong chat model can reason through a task. Stratum adds the operating layer needed when that task becomes a long project with files, workers, tools, retries, and memory.
+					</p>
+				</div>
+				<div className="comparison-grid">
+					{chatOnlyLimits.map(([title, body]) => (
+						<article key={title}>
+							<strong>{title}</strong>
+							<p>{body}</p>
+						</article>
+					))}
+				</div>
+			</section>
 		</>
 	);
 }
