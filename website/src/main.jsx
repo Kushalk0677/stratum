@@ -673,12 +673,55 @@ function Download() {
 
 function Footer({ onNavigate }) {
 	return (
-		<footer onClick={onNavigate}>
-			<a className="brand" href="/" data-route>
-				<img src="/assets/stratum-logo.png" alt="" />
-				<span>Stratum</span>
-			</a>
-			<span>Made by Stratum for Stratum</span>
+		<footer className="site-footer" onClick={onNavigate}>
+			<div className="footer-brand">
+				<a className="brand" href="/" data-route>
+					<img src="/assets/stratum-logo.png" alt="" />
+					<span>Stratum</span>
+				</a>
+				<p>Manager-led AI workspace for long-running research, coding, LaTeX, browser verification, Git review, and persistent project memory.</p>
+			</div>
+			<nav aria-label="Footer product navigation">
+				<strong>Product</strong>
+				<a href="/" data-route>
+					Overview
+				</a>
+				<a href="/features" data-route>
+					Features
+				</a>
+				<a href="/use-cases" data-route>
+					Use cases
+				</a>
+				<a href="/local-models" data-route>
+					Local models
+				</a>
+			</nav>
+			<nav aria-label="Footer use case navigation">
+				<strong>Workflows</strong>
+				<a href="/use-cases" data-route>
+					Research projects
+				</a>
+				<a href="/use-cases" data-route>
+					LaTeX writing
+				</a>
+				<a href="/use-cases" data-route>
+					Release validation
+				</a>
+				<a href="/use-cases" data-route>
+					Browser checks
+				</a>
+			</nav>
+			<div className="footer-cta">
+				<strong>Windows desktop</strong>
+				<p>Download the current Stratum installer for testing.</p>
+				<a className="primary-action" href="/download" data-route>
+					Download
+				</a>
+			</div>
+			<div className="footer-bottom">
+				<span>Made by Stratum for Stratum</span>
+				<span>Built for manager-led agent runs.</span>
+			</div>
 		</footer>
 	);
 }

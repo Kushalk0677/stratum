@@ -1370,16 +1370,78 @@ p {
 	background: #f8fafc;
 }
 
-footer {
+.site-footer {
+	display: grid;
+	grid-template-columns: minmax(280px, 1.45fr) minmax(140px, 0.55fr) minmax(160px, 0.7fr) minmax(240px, 0.9fr);
+	gap: clamp(24px, 4vw, 58px);
+	padding: clamp(38px, 5vw, 68px) clamp(20px, 5vw, 88px) 24px;
+	border-top: 1px solid #e1e6ef;
+	background:
+		linear-gradient(90deg, rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+		linear-gradient(180deg, rgba(15, 23, 42, 0.028) 1px, transparent 1px),
+		#f8fafc;
+	background-size: 56px 56px;
+	color: #64748b;
+	font-size: 14px;
+}
+
+.footer-brand,
+.site-footer nav,
+.footer-cta {
+	display: grid;
+	align-content: start;
+	gap: 12px;
+}
+
+.footer-brand p,
+.footer-cta p {
+	max-width: 470px;
+	margin: 0;
+	color: #4b5563;
+	line-height: 1.6;
+}
+
+.site-footer nav strong,
+.footer-cta strong {
+	color: #111827;
+	font-size: 13px;
+	font-weight: 850;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.site-footer nav a {
+	width: max-content;
+	color: #64748b;
+	font-weight: 700;
+}
+
+.site-footer nav a:hover {
+	color: #174ea6;
+}
+
+.footer-cta {
+	padding: 18px;
+	border: 1px solid #d8dee9;
+	border-radius: 10px;
+	background: rgba(255, 255, 255, 0.82);
+}
+
+.footer-cta .primary-action {
+	width: max-content;
+	min-height: 40px;
+	padding: 0 16px;
+}
+
+.footer-bottom {
+	grid-column: 1 / -1;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: 18px;
-	padding: 28px clamp(20px, 5vw, 88px);
+	gap: 16px;
+	padding-top: 22px;
 	border-top: 1px solid #e1e6ef;
-	background: #ffffff;
 	color: #64748b;
-	font-size: 14px;
 }
 
 @keyframes particleDrift {
@@ -1525,6 +1587,7 @@ footer {
 	.os-body,
 	.run-envelope,
 	.metric-strip,
+	.site-footer,
 	.split-heading,
 	.lifecycle-grid,
 	.surface-matrix,
@@ -1559,6 +1622,11 @@ footer {
 
 	.download-cta {
 		align-items: start;
+	}
+
+	.footer-bottom {
+		display: grid;
+		justify-content: start;
 	}
 }
 
