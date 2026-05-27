@@ -1063,15 +1063,38 @@ const docsSections = [
 	},
 	{
 		id: "releases",
-		title: "Releases",
+		title: "Stratum 0.0.3",
 		body: [
-			"Release builds should use a repeatable sequence: app build, unpacked prerelease, patched exe icon with rcedit, then NSIS installer from the patched unpacked app.",
+			"This release improves Stratum as a manager-led AI workspace for serious long-running research and build tasks.",
 		],
 		points: [
-			"Attach the installer to GitHub Releases.",
-			"Keep the filename stable for website downloads.",
-			"Include release notes for update prompts.",
-			"Verify taskbar and installer icons before sending to testers.",
+			"Added: Supabase account login, access roles, revocation, and monthly quota tracking.",
+			"Added: Admin controls in Settings for user access and token limits.",
+			"Added: Over-the-air update checks from GitHub releases.",
+			"Added: Update available popup and deferred update indicator.",
+			"Added: Multi-key provider support with key rotation, status tracking, and retry cooldowns.",
+			"Added: ChatGPT / Codex account provider alongside normal API keys.",
+			"Added: Parallel worker delegation for independent manager-assigned tasks.",
+			"Added: Run envelope tracking for worker task state, retries, tool activity, and failures.",
+			"Added: Rollback/review tooling for inspecting file changes after chat turns.",
+			"Added: Slash command support for goal, plan/build-style behavior, grill-me, schedule, and refer.",
+			"Added: Persistent chat history with full reload support.",
+			"Added: Onboarding flow with restart option in Settings.",
+			"Added: Project dashboard, notes, GitHub workspace, LaTeX workspace, browser tools, and local model guidance.",
+			"Changed: Manager can now delegate to multiple workers concurrently when tasks are independent.",
+			"Changed: Worker prompts and summaries are more structured for verification.",
+			"Changed: Provider keys are managed as pools instead of single stored values.",
+			"Changed: Failed API keys are retried after a cooldown instead of being permanently skipped.",
+			"Changed: Run reliability UI is cleaner and better tied to actual task state.",
+			"Changed: Website was redesigned as a serious Product OS style site with documentation, use cases, and download flow.",
+			"Fixed: Installer icon and Windows app branding issues.",
+			"Fixed: Installer build flow using patched executable icon before NSIS packaging.",
+			"Fixed: GitHub workflow panel restoration.",
+			"Fixed: Chat compaction no longer removes visible chat history.",
+			"Fixed: Manager-only view and run envelope layout issues.",
+			"Fixed: Settings/admin layout and quota display issues.",
+			"Fixed: API key migration from dev storage to installed storage.",
+			"Notes: Windows installer asset: stratum-setup.exe. Version 0.0.3. Recommended for testers using Windows with cloud or local models.",
 		],
 	},
 ];
@@ -1955,7 +1978,7 @@ function Download() {
 					This installer includes the current Stratum desktop build. Windows may show an unsigned-app warning until code signing is configured.
 				</p>
 				<a className="download-button" href="/downloads/stratum-setup.exe" download>
-					Download stratum Setup 0.0.1.exe
+					Download stratum Setup 0.0.3.exe
 				</a>
 				<div className="download-notes">
 					<span>Platform: Windows x64</span>
