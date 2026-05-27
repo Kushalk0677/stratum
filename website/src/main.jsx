@@ -1977,8 +1977,8 @@ function Download() {
 				<p>
 					This installer includes the current Stratum desktop build. Windows may show an unsigned-app warning until code signing is configured.
 				</p>
-				<a className="download-button" href="/downloads/stratum-setup.exe" download>
-					Download stratum Setup 0.0.3.exe
+				<a className="download-button" href="https://github.com/Kushalk0677/stratum/releases/latest/download/stratum-setup.exe">
+					Download stratum Setup 0.0.1.exe
 				</a>
 				<div className="download-notes">
 					<span>Platform: Windows x64</span>
