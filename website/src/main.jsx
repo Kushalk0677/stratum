@@ -1063,7 +1063,7 @@ const docsSections = [
 	},
 	{
 		id: "releases",
-		title: "Stratum 0.0.3",
+		title: "Stratum 0.0.4",
 		body: [
 			"This release improves Stratum as a manager-led AI workspace for serious long-running research and build tasks.",
 		],
@@ -1095,6 +1095,18 @@ const docsSections = [
 			"Fixed: Settings/admin layout and quota display issues.",
 			"Fixed: API key migration from dev storage to installed storage.",
 			"Notes: Windows installer asset: stratum-setup.exe. Version 0.0.3. Recommended for testers using Windows with cloud or local models.",
+		],
+	},
+	{
+		id: "releases",
+		title: "Stratum 0.0.4",
+		body: [
+			"This release adds free opencode AI models.",
+		],
+		points: [
+			"Added: Free opencode model support: big-pickle, deepseek-v4-flash-free, and nemotron-3-super-free can be selected.",
+			"Changed: Default opencode model switched from kimi-k2.6 (paid) to big-pickle (free).",
+			"Notes: Windows installer asset: stratum-setup.exe. Version 0.0.4. Free models are rate-limited server-side; paid opencode models still require an API key.",
 		],
 	},
 ];
@@ -1978,7 +1990,7 @@ function Download() {
 					This installer includes the current Stratum desktop build. Windows may show an unsigned-app warning until code signing is configured.
 				</p>
 				<a className="download-button" href="https://github.com/Kushalk0677/stratum/releases/latest/download/stratum-setup.exe">
-					Download stratum Setup 0.0.3.exe
+					Download stratum Setup 0.0.4.exe
 				</a>
 				<div className="download-notes">
 					<span>Platform: Windows x64</span>
