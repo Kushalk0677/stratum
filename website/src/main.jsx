@@ -992,7 +992,9 @@ const docsSections = [
 			"Delete is for cleaning the visible transcript without changing project files.",
 			"The review overlay should show changed files, additions, removals, and file previews.",
 			"This feature is independent of Git and should work in ordinary folders.",
-		
+		],
+	},
+
 	{
 		id: "monitor-backdoor",
 		title: "Monitor backdoor",
@@ -1010,8 +1012,7 @@ const docsSections = [
 			'Example usage: curl.exe -s http://127.0.0.1:3001/api/status | python -c "import sys,json;d=json.load(sys.stdin);print(d)"',
 		],
 	},
-],
-	},
+
 	{
 		id: "run-reliability",
 		title: "Run reliability",
@@ -1210,7 +1211,28 @@ const docsSections = [
 			"Notes: Windows installer asset: stratum-setup.exe. MacOS (Silicon) installer asset: stratum-mac-arm64.dmg. Existing v0.0.5 users: theme default stays grayscale (no visual change on upgrade).",
 		],
 	},
+
 	{
+		id: "v0-0-7",
+		title: "Stratum 0.0.7",
+		body: [
+			"This release introduces a theme system with eight color variants, fixes streaming stutter during long manager thinking sequences, and resolves main-thread freezing under heavy multi-agent load.",
+		],
+		points: [
+			"Theme system — eight color variants switchable live from Settings > Theme and persisted across restarts: Default (the original clean grayscale palette), Stratum (teal/cyan accent with cool-tinted backgrounds), Warm (orange/amber accent with warm cream backgrounds, based on Claude's palette), Vivid Violet (purple accent with violet-tinted surfaces), Synthwave (retro cyberpunk with blue/pink neon accents), Sunset (warm orange/amber tones with deep contrast), Ocean (blue palette derived from marine tones), High Contrast (grey achromatic chrome with bright orange message bubbles for accessibility). Each theme has matching light and dark mode support.",
+			"Manager tools — abort_worker(workerId) and refresh_worker(workerId) stop or restart a specific worker without affecting others.",
+			"Task dependency chains — workers can specify dependsOn: \"workerId\" to wait for another worker's task to complete. The dependency's lastSummary is automatically injected into the waiting worker's context.",
+			"/compact command — reuses existing compactAgentContext() logic, no LLM call.",
+			"Fixed: Streaming stutter — MarkdownBlock.render() was calling marked.parse() synchronously on every text delta (~50-100ms per call for long responses), saturating the main thread. Text chunks now render as plain whitespace-pre-wrap during streaming; full markdown rendering only runs once on finalize.",
+			"Fixed: StreamingMessageContainer overhead — replaced JSON.parse(JSON.stringify()) deep clone on every animation frame with direct reference assignment, avoiding serialization cost for large message objects.",
+			"Fixed: Main-thread freezing under heavy load — announceStats() was firing synchronously on every agent event (including every streaming chunk), iterating all messages across all 5 agents 10+ times per second. Debounced to 500ms and caches estimateContextTokens() between message ends.",
+			"Fixed: Update URLs — the app now correctly checks Kushalk0677/startum-mac for releases and downloads stratum-mac-arm64.dmg instead of pointing to a stale repo and .exe file.",
+			"Changed: Hardcoded orange user-message gradients, slash menu borders, and action dialog colors updated to match the active palette across all eight theme variants.",
+			"Changed: run-envelope background changed from hardcoded #f8fafc to var(--desktop-subtle) so it responds to theme switching.",
+			"Changed: Worker panel shows amber blocked status dot and 'waiting for {workerId}' label when a dependency is active.",
+			"Notes: Windows installer asset: stratum-setup.exe. macOS (Silicon) installer asset: stratum-mac-arm64.dmg.",
+		],
+	},	{
 		id: "press",
 		title: "Press",
 		body: [
