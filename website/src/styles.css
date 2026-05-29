@@ -1994,6 +1994,47 @@ p {
 	font-size: 14px;
 }
 
+.docs-table-wrap {
+	margin: 22px 0;
+	overflow-x: auto;
+}
+
+.docs-table-caption {
+	margin: 0 0 8px;
+	font-size: 15px;
+	font-weight: 600;
+	color: #111827;
+}
+
+.docs-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+.docs-table th,
+.docs-table td {
+	padding: 10px 14px;
+	text-align: left;
+	border: 1px solid #d8dee9;
+	vertical-align: top;
+}
+
+.docs-table th {
+	background: #f1f5f9;
+	font-weight: 600;
+	color: #1e293b;
+}
+
+.docs-table td {
+	color: #374151;
+}
+
+.docs-table tbody tr:nth-child(even) {
+	background: #f8fafc;
+}
+
 .docs-on-page {
 	display: grid;
 	align-content: start;
