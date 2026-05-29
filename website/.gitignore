@@ -3,3 +3,9 @@ dist/
 .env
 .env.*
 *.local
+
+# Stratum agent workspace files
+.stratum/
+notes.md
+plan.md
+codebase.md

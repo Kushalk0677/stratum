@@ -242,6 +242,13 @@ p {
 	min-height: 42px;
 }
 
+.download-buttons {
+	display: flex;
+	gap: 12px;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
 .mobile-menu-button {
 	display: none;
 	align-items: center;

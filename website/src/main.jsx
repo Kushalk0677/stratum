@@ -92,7 +92,7 @@ const featureSpotlights = [
 const proofMetrics = [
 	["5", "visible workers"],
 	["128K", "tracked context"],
-	["180M+", "project tokens tracked"],
+	["1.2B", "project tokens tracked"],
 	["850+", "model definitions"],
 ];
 
@@ -423,7 +423,7 @@ const docsNavigation = [
 			["Changelog", "changelog"],
 			["Support", "support"],
 			["Press", "press"],
-			["Releases", "releases"],
+			["Releases", "v0-0-3"],
 		],
 	},
 ];
@@ -1049,21 +1049,8 @@ const docsSections = [
 		],
 	},
 	{
-		id: "press",
-		title: "Press",
-		body: [
-			"Stratum is a Windows desktop app for manager-led AI workspaces. It combines a manager chat, visible worker lanes, project memory, Git review, LaTeX editing, browser verification, model routing, and release tooling for supervised long-running research/build work.",
-		],
-		points: [
-			"Category: AI workspace / agent orchestration desktop app.",
-			"Platform: Windows.",
-			"Primary users: researchers, builders, technical writers, and small labs running long tasks.",
-			"Positioning: a workspace around model execution, not another single chat UI.",
-		],
-	},
-	{
-		id: "releases",
-		title: "Stratum 0.0.4",
+		id: "v0-0-3",
+		title: "Stratum 0.0.3",
 		body: [
 			"This release improves Stratum as a manager-led AI workspace for serious long-running research and build tasks.",
 		],
@@ -1098,7 +1085,7 @@ const docsSections = [
 		],
 	},
 	{
-		id: "releases",
+		id: "v0-0-4",
 		title: "Stratum 0.0.4",
 		body: [
 			"This release adds free opencode AI models.",
@@ -1107,6 +1094,60 @@ const docsSections = [
 			"Added: Free opencode model support: big-pickle, deepseek-v4-flash-free, and nemotron-3-super-free can be selected.",
 			"Changed: Default opencode model switched from kimi-k2.6 (paid) to big-pickle (free).",
 			"Notes: Windows installer asset: stratum-setup.exe. Version 0.0.4. Free models are rate-limited server-side; paid opencode models still require an API key.",
+		],
+	},
+
+
+	{
+		id: "v0-0-5",
+		title: "Stratum 0.0.5",
+		body: [
+			"This release makes Stratum more robust for long-running research sessions with better error recovery, worker delegation, and performance.",
+		],
+		points: [
+			"Sub-agent delegation tools (search_files, analyze_code) that dispatch read-only tasks to worker gpt-4.1-mini agents with a dedicated tool set (list_skills, read_skill, read_codebase, read_project_notes, list_files, read_file, web_fetch_url, web_search). Configurable in Settings.",
+			"Chat save checkpoint with 200ms debounced auto-save, 15s periodic flush, and pagehide handler to prevent data loss on close.",
+			"LLM error normalization — maps 8 API error patterns (rate limit, auth, timeout, context length, server error, etc.) to user-friendly guidance displayed inline.",
+			"Lazy tool result rendering — collapsed tool calls no longer render result content in the DOM. First expand creates the markup, fixing stutter in conversations with many tool calls.",
+			"Global error handlers for main and renderer processes.",
+			"Atomic file writes via temp file + rename.",
+			"IPC invoke timeout proxy (15s default).",
+			"Agent loop iteration limit (50 max turns, synthetic error stop on breach).",
+			"Message list cap at 50 visible messages with 'Show N older' button.",
+			// Fixed section header will be rendered via a "Fixed" subheading in the bullet list:
+			"Fixed: DeepSeek 400 error caused by context compaction splitting tool_call/toolResult pairs — now scans backward for matching calls before splitting.",
+			"Fixed: TypeScript compilation failure — upgraded tsconfig.base.json target/lib from ES2022 to ES2024 to fix /v regex flag errors.",
+			"Fixed: Aborted in-flight agent requests on chat switch now properly cleaned up.",
+			"Fixed: Installer icon patching integrated into build flow.",
+			"Notes: Windows installer asset: stratum-setup.exe. Recommended for testers using DeepSeek with multi-turn conversations.",
+		],
+	},
+	{
+		id: "v0-0-6",
+		title: "Stratum 0.0.6",
+		body: [
+			"This release introduces a theme system with three color variants and fixes streaming stutter during long manager thinking sequences.",
+		],
+		points: [
+			"Theme system — three color variants switchable live from Settings > Theme and persisted across restarts: Default (the original clean grayscale palette), Stratum (teal/cyan accent with cool-tinted backgrounds), Warm (orange/amber accent with warm cream backgrounds, based on Claude's palette). Each theme has matching light and dark mode support.",
+			"Fixed: Streaming stutter — MarkdownBlock.render() was calling marked.parse() synchronously on every text delta (~50-100ms per call for long responses), saturating the main thread. Text chunks now render as plain <div class=\"whitespace-pre-wrap\"> during streaming; full markdown rendering only runs once on finalize.",
+			"Fixed: StreamingMessageContainer overhead — replaced JSON.parse(JSON.stringify()) deep clone on every animation frame with direct reference assignment, avoiding serialization cost for large message objects.",
+			"Changed: Hardcoded orange user-message gradients, slash menu borders, and action dialog colors updated to match the active palette (teal for Stratum, warm tones for Warm theme).",
+			"Changed: run-envelope background changed from hardcoded #f8fafc to var(--desktop-subtle) so it responds to theme switching.",
+			"Notes: Windows installer asset: stratum-setup.exe. MacOS (Silicon) installer asset: stratum-mac-arm64.dmg. Existing v0.0.5 users: theme default stays grayscale (no visual change on upgrade).",
+		],
+	},
+	{
+		id: "press",
+		title: "Press",
+		body: [
+			"Stratum is a Windows desktop app for manager-led AI workspaces. It combines a manager chat, visible worker lanes, project memory, Git review, LaTeX editing, browser verification, model routing, and release tooling for supervised long-running research/build work.",
+		],
+		points: [
+			"Category: AI workspace / agent orchestration desktop app.",
+			"Platform: Windows.",
+			"Primary users: researchers, builders, technical writers, and small labs running long tasks.",
+			"Positioning: a workspace around model execution, not another single chat UI.",
 		],
 	},
 ];
@@ -1716,7 +1757,7 @@ function DownloadCTA({ onNavigate }) {
 	return (
 		<section className="download-cta" onClick={onNavigate}>
 			<div>
-				<p className="eyebrow">Windows desktop</p>
+				<p className="eyebrow">Windows & Mac desktop</p>
 				<h2>Install the workspace for supervised long-running research and build work.</h2>
 			</div>
 			<a className="primary-action" href="/download" data-route>
@@ -1739,7 +1780,7 @@ function HeroIntro({ onNavigate }) {
 			</p>
 			<div className="hero-actions">
 				<a className="primary-action" href="/download" data-route>
-					Download for Windows
+					Download for Windows & Mac
 				</a>
 				<a className="secondary-action" href="/features" data-route>
 					Explore the system
@@ -1984,16 +2025,22 @@ function Download() {
 		<section className="download-page">
 			<div className="download-panel">
 				<img src="/assets/app-logo.png" alt="Stratum logo" />
-				<p className="eyebrow">Windows installer</p>
-				<h1>Download Stratum</h1>
+				<p className="eyebrow">Windows & Mac installer</p>
+				<h1>Download Stratum for Windows & Mac</h1>
 				<p>
 					This installer includes the current Stratum desktop build. Windows may show an unsigned-app warning until code signing is configured.
 				</p>
-				<a className="download-button" href="https://github.com/Kushalk0677/stratum/releases/latest/download/stratum-setup.exe">
-					Download stratum Setup 0.0.4.exe
-				</a>
+				<div className="download-buttons">
+					<a className="download-button" href="https://github.com/Kushalk0677/stratum/releases/latest/download/stratum-setup.exe">
+						Download for Windows
+					</a>
+					<a className="download-button" href="https://github.com/Kushalk0677/stratum/releases/latest/download/stratum-mac-arm64.dmg">
+						Download for Mac (ARM64)
+					</a>
+				</div>
 				<div className="download-notes">
 					<span>Platform: Windows x64</span>
+					<span>Platform: macOS Apple Silicon (ARM64)</span>
 					<span>Publisher label: kushalk0677</span>
 					<span>Installer type: NSIS</span>
 				</div>
@@ -2167,7 +2214,7 @@ function Footer({ onNavigate }) {
 				</a>
 			</nav>
 			<div className="footer-cta">
-				<strong>Windows desktop</strong>
+				<strong>Windows & Mac</strong>
 				<p>Download the current Stratum installer for testing.</p>
 				<a className="primary-action" href="/download" data-route>
 					Download
