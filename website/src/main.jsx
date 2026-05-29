@@ -258,7 +258,7 @@ const useCases = [
 		"Use browser, terminal, Git review, and workflow history to verify a release path before handing binaries to testers.",
 		"https://images.pexels.com/photos/12903173/pexels-photo-12903173.jpeg?auto=compress&cs=tinysrgb&w=1200",
 		["Local preview and route verification", "GitHub diff and CI review", "Installer link and release notes tracked as explicit checks"],
-		"Build a Windows installer, verify the download page, and check that the release asset resolves for testers.",
+		"Build the installer, verify the download page, and check that the release asset resolves for testers.",
 		"The manager drives terminal build checks, browser route checks, GitHub diff review, and release notes verification as one auditable workflow.",
 	],
 	[
@@ -314,32 +314,32 @@ const differentiationRows = [
 	[
 		"Product center",
 		"Manager-led project workspace where one manager supervises visible worker lanes and every artifact stays tied to the selected project.",
-		"Standalone agent command center for launching, monitoring, and orchestrating agents across Projects, with the IDE split into a separate surface.",
-		"Coding agent across cloud, CLI, app, IDE, and GitHub surfaces for repository tasks, reviews, fixes, and delegated implementation.",
+		"Standalone agent command center for launching, monitoring, and orchestrating agents across projects. Stronger dynamic subagent orchestration and deeper Google/Gemini ecosystem integration.",
+		"Coding agent across cloud, CLI, app, IDE, and GitHub surfaces. Best-in-class coding model execution and isolated cloud sandboxes for repository tasks, reviews, and delegated implementation.",
 	],
 	[
 		"Agent model",
 		"Manager-owned run with scoped workers for implementation, browser checks, review, tests, research, and artifact work.",
-		"Dynamic subagents can be defined and invoked by the main agent for parallel parts of complex tasks.",
-		"Cloud tasks can run independently and in parallel; CLI subagents are available when the user explicitly asks for them.",
+		"Agents define and invoke subagents dynamically for parallel task execution within a single conversation. Broad model support and flexible agent composition.",
+		"Independent cloud tasks run in parallel with strong isolation. CLI subagents, computer use, and IDE-native agent coding with GitHub integration.",
 	],
 	[
 		"Project memory",
 		"plan.md, codebase.md, notes, todos, chat history, workflow events, screenshots, logs, diffs, and generated files remain inside or beside the project.",
-		"Projects can span multiple folders with scoped settings and permissions; artifacts and knowledge items support task progress and review.",
-		"AGENTS.md supplies project guidance; cloud tasks run in isolated environments and return evidence, diffs, commits, or pull requests for review.",
+		"Projects span multiple folders with scoped settings and permissions. Knowledge items and artifacts support task tracking and review across workspaces.",
+		"AGENTS.md supplies project guidance. Cloud tasks run in isolated environments and return evidence, diffs, commits, or PRs for review. Strong citation and source tracking.",
 	],
 	[
 		"Technical surfaces",
 		"Browser, terminal, GitHub/code review, LaTeX, file tree, notes/todos, permissions, model routing, quotas, and updates are first-class workspace panels.",
-		"Agents can use system commands, file operations, web search, skills, MCP servers, Chrome/browser automation, artifacts, and implementation plans.",
-		"CLI, cloud, app, IDE extension, GitHub review, shell, web search, image input/generation, computer use, and configurable environments cover coding workflows.",
+		"System commands, file operations, web search, skills, MCP servers, Chrome/browser automation, artifacts, and implementation plans. Deep Google Workspace and Gemini integration.",
+		"CLI, cloud, app, IDE extension, GitHub review, shell, web search, image input/generation, computer use, and configurable run environments. Comprehensive coding toolchain support.",
 	],
 	[
 		"Supervision style",
 		"The user supervises the manager; the manager plans, delegates, verifies, records memory, and only retries when worker or tool state justifies it.",
-		"Users manage synchronous and asynchronous agents through a command-center UI, scheduled tasks, artifacts, feedback, and project-level guardrails.",
-		"Users monitor cloud progress, inspect terminal/test citations, request revisions, apply diffs, open PRs, or use CLI approval modes locally.",
+		"Users manage synchronous and asynchronous agents through a command-center UI with scheduled tasks, artifacts, inline feedback, and project-level guardrails.",
+		"Users monitor cloud progress, inspect terminal and test citations, request revisions, apply diffs, open PRs, or use CLI approval modes. Familiar IDE-native workflow.",
 	],
 	[
 		"Best fit",
@@ -371,6 +371,7 @@ const docsNavigation = [
 		items: [
 			["Overview", "overview"],
 			["Getting started", "getting-started"],
+			["Quick start", "quick-start"],
 			["Onboarding", "onboarding-tour"],
 			["Core workflow", "core-workflow"],
 			["Run anatomy", "run-anatomy-docs"],
@@ -451,16 +452,45 @@ const docsSections = [
 		id: "getting-started",
 		title: "Getting started",
 		body: [
-			"Install Stratum on Windows, open a project folder, choose a manager model, and send a goal. Stratum creates the manager and worker lanes for that project.",
+			"Install Stratum on Windows or Mac, open a project folder, choose a manager model, and send a goal. Stratum creates the manager and worker lanes for that project.",
 			"For first-run testing, use a cloud model for the manager and a cheaper or local model for workers. This keeps planning strong while reducing token spend.",
 		],
 		steps: [
-			"Download the Windows installer from the Download page.",
+			"Download the installer from the Download page.",
 			"Open Stratum and sign in if account gating is enabled.",
 			"Create or open a project chat from the left panel.",
 			"Select a manager model.",
 			"Add provider keys when prompted, or manage them from Settings.",
 			"Send a concrete project goal such as: review this repo, create a release website, verify the installer link, and list blockers.",
+		],
+	},
+	{
+		id: "quick-start",
+		title: "Quick start: your first goal run",
+		body: [
+			"This walkthrough runs a real task end to end: open a code repository and ask Stratum to review it and summarize the purpose, structure, key files, and any visible issues. By the end you will have seen Stratum move from goal to plan, delegation, execution, verification, and project memory.",
+		],
+		steps: [
+			"Open Stratum and select a project folder containing a code repository you want to review.",
+			"In the manager chat, type: /goal Review this repository. Identify the main purpose, architecture, key files, and any obvious issues or blockers. Summarize findings in a markdown file called quick-start-review.md.",
+			"Wait for the manager to create a plan. You should see a plan summary showing the phases, worker assignments, and expected artifacts.",
+			"Let the manager delegate workers. Worker lanes appear with status indicators as they inspect files, run checks, and collect findings.",
+			"When workers complete, the manager verifies the results. You should see a verification step where the manager reviews what each worker found.",
+			"Check the project memory: open plan.md to see the run history, and find quick-start-review.md in the file tree to see the final output.",
+		],
+		points: [
+			"Expected outcome per phase: (1) Goal accepted — manager creates a plan. (2) Plan published — phases and workers visible. (3) Workers assigned — lane status shows active work. (4) Workers complete — summaries returned to manager. (5) Manager verifies — diffs and findings reviewed. (6) Memory written — output files and plan.md updated.",
+		],
+		tables: [
+			{
+				caption: "Common first-run failure modes",
+				headers: ["Failure mode", "Likely cause", "Solution"],
+				rows: [
+					["Missing API key", "No provider key added in Settings", "Open Settings > API Keys and add a valid key for your chosen model provider."],
+					["Model not responding", "Provider outage, rate limit, or network issue", "Check the key status in Settings, wait 30 seconds, and retry. Switch to a different model if the issue persists."],
+					["No project folder selected", "Stratum needs a folder to read and write project files", "Click the folder icon in the left panel to select or create a project folder before sending a goal."],
+				],
+			},
 		],
 	},
 	{
@@ -583,6 +613,20 @@ const docsSections = [
 			"Delete files: should be explicit because it can remove project artifacts.",
 			"Network access: useful for docs and references, but external sources should be cited or stored.",
 			"Permission denied should cause manager adaptation, not blind retry.",
+		],
+		tables: [
+			{
+				caption: "Recommended defaults for new projects",
+				headers: ["Permission", "Recommended default", "Rationale"],
+				rows: [
+					["Read files", "Allow", "Agents need to inspect the project to understand code, config, and state."],
+					["Write files", "Ask first", "Safe default until you trust the run. Prevents unwanted edits."],
+					["Run commands", "Ask first", "Prevents unexpected script execution while keeping builds accessible."],
+					["Git commit/push", "Ask first", "Source control should be explicit. Review diffs before committing."],
+					["Delete files", "Deny", "Too destructive for routine work. Require explicit user approval."],
+					["Network access", "Allow", "Needed for docs, API calls, web verification, and package downloads."],
+				],
+			},
 		],
 	},
 	{
@@ -999,7 +1043,7 @@ const docsSections = [
 			"Release detection should compare the installed app version to the latest GitHub release tag.",
 			"Release notes should be visible before the user downloads.",
 			"The installer asset filename should remain stable for the website and updater.",
-			"Unsigned installers may still show Windows warnings until code signing is configured.",
+			"Unsigned installers may still show platform warnings until code signing is configured.",
 			"The app should not silently install updates without clear user approval.",
 		],
 	},
@@ -1081,7 +1125,7 @@ const docsSections = [
 			"Fixed: Manager-only view and run envelope layout issues.",
 			"Fixed: Settings/admin layout and quota display issues.",
 			"Fixed: API key migration from dev storage to installed storage.",
-			"Notes: Windows installer asset: stratum-setup.exe. Version 0.0.3. Recommended for testers using Windows with cloud or local models.",
+			"Notes: Windows installer asset: stratum-setup.exe (Mac builds were not yet available in this release). Version 0.0.3. Recommended for testers using Windows with cloud or local models.",
 		],
 	},
 	{
@@ -1093,7 +1137,7 @@ const docsSections = [
 		points: [
 			"Added: Free opencode model support: big-pickle, deepseek-v4-flash-free, and nemotron-3-super-free can be selected.",
 			"Changed: Default opencode model switched from kimi-k2.6 (paid) to big-pickle (free).",
-			"Notes: Windows installer asset: stratum-setup.exe. Version 0.0.4. Free models are rate-limited server-side; paid opencode models still require an API key.",
+			"Notes: Windows installer asset: stratum-setup.exe (Mac builds were not yet available in this release). Version 0.0.4. Free models are rate-limited server-side; paid opencode models still require an API key.",
 		],
 	},
 
@@ -1119,7 +1163,7 @@ const docsSections = [
 			"Fixed: TypeScript compilation failure — upgraded tsconfig.base.json target/lib from ES2022 to ES2024 to fix /v regex flag errors.",
 			"Fixed: Aborted in-flight agent requests on chat switch now properly cleaned up.",
 			"Fixed: Installer icon patching integrated into build flow.",
-			"Notes: Windows installer asset: stratum-setup.exe. Recommended for testers using DeepSeek with multi-turn conversations.",
+			"Notes: Windows installer asset: stratum-setup.exe. Mac (ARM64) installer asset: stratum-mac-arm64.dmg. Recommended for testers using DeepSeek with multi-turn conversations.",
 		],
 	},
 	{
@@ -1141,11 +1185,11 @@ const docsSections = [
 		id: "press",
 		title: "Press",
 		body: [
-			"Stratum is a Windows desktop app for manager-led AI workspaces. It combines a manager chat, visible worker lanes, project memory, Git review, LaTeX editing, browser verification, model routing, and release tooling for supervised long-running research/build work.",
+			"Stratum is a Windows & Mac desktop app for manager-led AI workspaces. It combines a manager chat, visible worker lanes, project memory, Git review, LaTeX editing, browser verification, model routing, and release tooling for supervised long-running research/build work.",
 		],
 		points: [
 			"Category: AI workspace / agent orchestration desktop app.",
-			"Platform: Windows.",
+			"Platform: Windows & Mac.",
 			"Primary users: researchers, builders, technical writers, and small labs running long tasks.",
 			"Positioning: a workspace around model execution, not another single chat UI.",
 		],
@@ -1776,7 +1820,7 @@ function HeroIntro({ onNavigate }) {
 			</div>
 			<h1>Manager-led AI workspaces for long-running projects.</h1>
 			<p className="hero-text">
-				Stratum is a Windows workspace where the user supervises one manager, visible worker lanes, dedicated tools, reviewable artifacts, and project memory that carries forward.
+				Stratum is a desktop workspace where the user supervises one manager, visible worker lanes, dedicated tools, reviewable artifacts, and project memory that carries forward.
 			</p>
 			<div className="hero-actions">
 				<a className="primary-action" href="/download" data-route>
@@ -2154,6 +2198,31 @@ function Documentation() {
 									<li key={point}>{point}</li>
 								))}
 							</ul>
+						) : null}
+						{section.tables ? (
+							section.tables.map((table) => (
+								<div key={table.caption} className="docs-table-wrap">
+									<p className="docs-table-caption">{table.caption}</p>
+									<table className="docs-table">
+										<thead>
+											<tr>
+												{table.headers.map((header) => (
+													<th key={header}>{header}</th>
+												))}
+											</tr>
+										</thead>
+										<tbody>
+											{table.rows.map((row, ri) => (
+												<tr key={ri}>
+													{row.map((cell, ci) => (
+														<td key={ci}>{cell}</td>
+													))}
+												</tr>
+											))}
+										</tbody>
+									</table>
+								</div>
+							))
 						) : null}
 					</section>
 				))}
