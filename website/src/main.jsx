@@ -1959,7 +1959,7 @@ function Features() {
 					<p>Stratum keeps manager control, worker status, project memory, and technical evidence visible while the run moves across files, tools, models, and artifacts.</p>
 				</div>
 				<div className="feature-grid">
-					{productSurfaces.map(([title, body, icon]) => (
+					{productSurfaces.map(([title, body, icon], index) => (
 						<article key={title} className="feature-card stagger" style={{ animationDelay: `${index * 0.07}s` }}>
 							<img src={icon} alt="" />
 							<h2>{title}</h2>
