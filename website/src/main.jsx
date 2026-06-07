@@ -43,7 +43,7 @@ const screenshotEvidence = [
 	["Agent permissions", screenshots.agentPermissions, "Tool access, file writes, commands, network behavior, and risky operations can be reviewed before workers act."],
 	["Multiple token pools", screenshots.multipleTokens, "Provider keys and token pools stay visible so teams can route work, manage quotas, and recover from key-specific failures."],
 	["Account information", screenshots.accountInformation, "Account state, plan details, and usage context are visible without leaving the workspace settings flow."],
-	["OTA updates", screenshots.otaUpdates, "Update checks and release notices help testers move to the right desktop build without manual coordination."],
+	["OTA updates", screenshots.otaUpdates, "Update checks and release notices help users move to the right desktop build without manual coordination."],
 	["LaTeX workspace", screenshots.latex, "LaTeX editor with files, outline navigation, compile controls, syntax highlighting, and PDF preview."],
 	["GitHub review", screenshots.githubDiff, "Diff review surface for local changes, release checks, file summaries, and approval workflow."],
 	["Notes", screenshots.notes, "Persistent project memory for decisions, blockers, useful commands, and context that should outlive the chat."],
@@ -78,13 +78,13 @@ const featureSpotlights = [
 	[
 		"Account information",
 		screenshots.accountInformation,
-		"Account and plan details sit beside usage and access context so hosted tester workflows remain inspectable.",
-		["See account state in place", "Support hosted tester workflows"],
+		"Account and plan details sit beside usage and access context so hosted team workflows remain inspectable.",
+		["See account state in place", "Support hosted team workflows"],
 	],
 	[
 		"OTA updates",
 		screenshots.otaUpdates,
-		"Desktop update checks keep release state visible so testers know which build belongs to the current project workflow.",
+		"Desktop update checks keep release state visible so users know which build belongs to the current project workflow.",
 		["Notify users about available builds", "Reduce manual release coordination"],
 	],
 ];
@@ -181,7 +181,7 @@ const supervisionControls = [
 	["Deletes", "Treat destructive operations as explicit boundaries, not routine edits."],
 	["Provider keys", "Route manager and workers across key pools with visible error state."],
 	["Quotas", "Track token usage and hosted limits while project runs continue."],
-	["Updates", "Surface installer and desktop build state for testers inside the app flow."],
+	["Updates", "Surface installer and desktop build state for users inside the app flow."],
 ];
 
 const slashCommands = [
@@ -255,10 +255,10 @@ const useCases = [
 	],
 	[
 		"Release and installer validation",
-		"Use browser, terminal, Git review, and workflow history to verify a release path before handing binaries to testers.",
+		"Use browser, terminal, Git review, and workflow history to verify a release path before releasing binaries to users.",
 		"https://images.pexels.com/photos/12903173/pexels-photo-12903173.jpeg?auto=compress&cs=tinysrgb&w=1200",
 		["Local preview and route verification", "GitHub diff and CI review", "Installer link and release notes tracked as explicit checks"],
-		"Build the installer, verify the download page, and check that the release asset resolves for testers.",
+		"Build the installer, verify the download page, and check that the release asset resolves for users.",
 		"The manager drives terminal build checks, browser route checks, GitHub diff review, and release notes verification as one auditable workflow.",
 	],
 	[
@@ -509,7 +509,7 @@ const docsSections = [
 		title: "Onboarding",
 		body: [
 			"Onboarding is the guided tour for first-time users. It should explain Stratum by opening real Stratum controls instead of showing a disconnected slideshow. A new user should see the left project panel, the model selector, the manager input, the right tool rail, the browser, notes, terminal, LaTeX, GitHub review, permissions, and settings in the same places they will use them during real work.",
-			"Onboarding can be restarted from Settings. The setting is useful when a tester skipped the tour, when a new build changes the workflow, or when a team member wants to learn the interface again without deleting their project data. The restart action should not erase chats, project folders, provider keys, quotas, notes, or saved settings. It only resets the guided-tour completion state.",
+			"Onboarding can be restarted from Settings. The setting is useful when a user skipped the tour, when a new build changes the workflow, or when a team member wants to learn the interface again without deleting their project data. The restart action should not erase chats, project folders, provider keys, quotas, notes, or saved settings. It only resets the guided-tour completion state.",
 			"The tour opens real Stratum controls, but keeps native browser content closed so the tour controls stay clickable. This matters because embedded browser views can sit above normal web UI layers and make the next, back, skip, or close buttons impossible to click. When the tour reaches browser-related steps, it should explain the browser surface with the browser panel closed or with a controlled mock state rather than letting a native webview cover the tour card.",
 			"The onboarding flow should teach the main mental model: the user supervises a manager-led team. The user does not need to understand every tool before the first task. They only need to know that the manager owns the run, workers execute scoped work, every surface is visible, and durable facts should be written into the project. The tour should also make it clear that Stratum is not just a model picker. It is a project workspace where artifacts, memory, changed files, and verification steps remain tied to the selected folder.",
 		],
@@ -664,7 +664,7 @@ const docsSections = [
 			"Rollback review: file changes after a user message can be inspected, rolled back, forked, or transcript-deleted.",
 			"Artifact review: screenshots, logs, diffs, PDFs, generated files, and release checks remain tied to the run.",
 			"Admin and quotas: hosted access can enforce roles, revocation, monthly token limits, and user visibility.",
-			"Updates: GitHub release checks can notify testers when a newer installer is available.",
+			"Updates: GitHub release checks can notify users when a newer installer is available.",
 		],
 	},
 	{
@@ -952,7 +952,7 @@ const docsSections = [
 			"The manager should prefer GitHub-specific tools over raw terminal commands for issues, pull requests, CI queries, comments, closing, creating, or merging. Raw terminal commands are still useful for local Git inspection or project-specific scripts, but GitHub tools create a cleaner audit trail and reduce command parsing mistakes. Before creating issues, PRs, or comments, the manager should draft the title and body and ask for explicit approval unless the user requested immediate creation.",
 			"When working on a GitHub issue, the manager should first inspect the issue content and decide whether the task is workable. It should identify likely files, risk, test requirements, and acceptance criteria before delegating. Workers can then inspect or patch scoped areas. A review worker should inspect the changed files and risks. The manager should open Git review before asking the user to commit, push, or prepare a PR.",
 			"The Pull / Push page should show branch name, upstream tracking, ahead/behind counts, file count, additions, and removals. This gives the user a release-readiness snapshot without reading terminal output. The Open Issues & PRs page should show issues, PRs, CI results, and selected item details. The app should not require the user to leave Stratum for routine triage.",
-			"Release workflows should treat the installer as an artifact. If the website download points to GitHub Releases, the release must include the installer asset with the expected filename. The manager should verify that the URL resolves, that release notes are useful, and that the app version and icon look correct before telling the user to send the installer to testers. Update prompts inside Stratum should also read release metadata from GitHub so testers know what changed.",
+			"Release workflows should treat the installer as an artifact. If the website download points to GitHub Releases, the release must include the installer asset with the expected filename. The manager should verify that the URL resolves, that release notes are useful, and that the app version and icon look correct before telling the user to share the installer with users. Update prompts inside Stratum should also read release metadata from GitHub so users know what changed.",
 		],
 		points: [
 			"Use GitHub tools for issues, PRs, CI, comments, and merges when possible.",
@@ -1043,7 +1043,7 @@ const docsSections = [
 			"Network access should be visible when agents depend on external documentation or web pages.",
 			"Delete operations should be explicit because they can remove user files or generated artifacts.",
 			"Provider keys, token pools, and quotas should show usable, in-use, errored, or limited state.",
-			"Updates should tell testers which desktop build they are running and what release is available.",
+			"Updates should tell users which desktop build they are running and what release is available.",
 		],
 	},
 	{
@@ -1073,7 +1073,7 @@ const docsSections = [
 			"Release detection should compare the installed app version to the latest GitHub release tag.",
 			"Release notes should be visible before the user downloads.",
 			"The installer asset filename should remain stable for the website and updater.",
-			"Unsigned installers may still show platform warnings until code signing is configured.",
+			"",
 			"The app should not silently install updates without clear user approval.",
 		],
 	},
@@ -1081,7 +1081,7 @@ const docsSections = [
 		id: "github-releases",
 		title: "GitHub and releases",
 		body: [
-			"Stratum includes GitHub and release workflows for testers. The app can check GitHub releases, show update prompts, and point users to the latest installer asset.",
+			"Stratum includes GitHub and release workflows for development teams. The app can check GitHub releases, show update prompts, and point users to the latest installer asset.",
 		],
 		points: [
 			"Release assets should be attached to GitHub Releases with stable filenames.",
@@ -1106,7 +1106,7 @@ const docsSections = [
 	{
 		id: "changelog",
 		title: "Changelog",
-		body: ["Current testing releases focus on reliability, onboarding, project chats, settings, GitHub review, LaTeX polish, chat history, rollback review, and update prompts."],
+		body: ["The latest release focuses on reliability, onboarding, project chats, settings, GitHub review, LaTeX polish, chat history, rollback review, and update prompts."],
 		points: releaseHighlights,
 	},
 	{
@@ -1120,6 +1120,19 @@ const docsSections = [
 			"For quota issues, check Settings > Account and Admin if available.",
 			"For model failures, inspect provider key status and cooldown.",
 			"For installer issues, verify the latest GitHub release asset exists.",
+		],
+	},
+{
+		id: "press",
+		title: "Press",
+		body: [
+			"Stratum is a Windows & Mac desktop app for manager-led AI workspaces. It combines a manager chat, visible worker lanes, project memory, Git review, LaTeX editing, browser verification, model routing, and release tooling for supervised long-running research/build work.",
+		],
+		points: [
+			"Category: AI workspace / agent orchestration desktop app.",
+			"Platform: Windows & Mac.",
+			"Primary users: researchers, builders, technical writers, and small labs running long tasks.",
+			"Positioning: a workspace around model execution, not another single chat UI.",
 		],
 	},
 	{
@@ -1154,8 +1167,8 @@ const docsSections = [
 			"Fixed: Chat compaction no longer removes visible chat history.",
 			"Fixed: Manager-only view and run envelope layout issues.",
 			"Fixed: Settings/admin layout and quota display issues.",
-			"Fixed: API key migration from dev storage to installed storage.",
-			"Notes: Windows installer asset: stratum-setup.exe (Mac builds were not yet available in this release). Version 0.0.3. Recommended for testers using Windows with cloud or local models.",
+			"Fixed: API key management moved to Settings with multi-key support.",
+			"Notes: Windows installer asset: stratum-setup.exe . Version 0.0.3. Recommended for users on Windows with cloud or local models.",
 		],
 	},
 	{
@@ -1193,7 +1206,7 @@ const docsSections = [
 			"Fixed: TypeScript compilation failure — upgraded tsconfig.base.json target/lib from ES2022 to ES2024 to fix /v regex flag errors.",
 			"Fixed: Aborted in-flight agent requests on chat switch now properly cleaned up.",
 			"Fixed: Installer icon patching integrated into build flow.",
-			"Notes: Windows installer asset: stratum-setup.exe. Mac (ARM64) installer asset: stratum-mac-arm64.dmg. Recommended for testers using DeepSeek with multi-turn conversations.",
+			"Notes: Windows installer asset: stratum-setup.exe. Mac (ARM64) installer asset: stratum-mac-arm64.dmg. Recommended for users on DeepSeek with multi-turn conversations.",
 		],
 	},
 	{
@@ -1232,19 +1245,46 @@ const docsSections = [
 			"Changed: Worker panel shows amber blocked status dot and 'waiting for {workerId}' label when a dependency is active.",
 			"Notes: Windows installer asset: stratum-setup.exe. macOS (Silicon) installer asset: stratum-mac-arm64.dmg.",
 		],
-	},	{
-		id: "press",
-		title: "Press",
+	},,
+	{
+		id: "v1-0-0",
+		title: "Stratum 1.0.0 Latest",
 		body: [
-			"Stratum is a Windows & Mac desktop app for manager-led AI workspaces. It combines a manager chat, visible worker lanes, project memory, Git review, LaTeX editing, browser verification, model routing, and release tooling for supervised long-running research/build work.",
+			"This release brings Stratum to 1.0.0 across Windows and macOS, syncing the current desktop core and making the app feel much closer to a real multi-agent coding workspace. It adds code indexing, cleaner Manager tool summaries, visible subagent/specialist-agent cards, safer rollback/checkpoint handling, remote Manager groundwork, and major chat UI polish.",
 		],
 		points: [
-			"Category: AI workspace / agent orchestration desktop app.",
-			"Platform: Windows & Mac.",
-			"Primary users: researchers, builders, technical writers, and small labs running long tasks.",
-			"Positioning: a workspace around model execution, not another single chat UI.",
+			"Desktop code indexing — project-local indexes under .stratum/index/ for files, symbols, imports/exports, references, edges, and manifest data.",
+			"Index-backed Manager/Explore tools: refresh_code_index, find_symbol, find_references, find_imports, retrieve_code_context.",
+			"Code context retrieval — Manager/Explore can retrieve compact code spans from the index before falling back to broad file reads.",
+			"Manager tool result cards — raw tool calls are grouped into compact expandable summaries instead of flooding the chat.",
+			"Edited-files review cards — assistant turns can show edited file counts, changed paths, additions/deletions, Undo, and Review.",
+			"Visible subagent cards — Explore, code analysis, indexing, and specialist-agent work can render as expandable agent-style transcripts.",
+			"Dynamic specialist agents — Manager can create focused session-only agents with preset tool access.",
+			"Message hover actions — messages can show timestamp, copy, and edit controls only on hover.",
+			"Remote Manager API groundwork — desktop can expose current Manager chat state and accept remote Manager messages.",
+			"Terminal completion notification groundwork — long-running background commands can notify Manager when complete.",
+			"Queue/steer UX groundwork — follow-up messages can be queued while Manager is still working.",
+			"Renderer assets — added dedicated icons for edit, tool, terminal, and steering UI.",
+			"Fixed: Windows and Mac version alignment — both desktop builds now use Stratum 1.0.0.",
+			"Fixed: Mac release sync — Mac repo now matches the current Windows/main desktop core instead of the older 0.0.7 codebase.",
+			"Fixed: CI model generation failure — generated model fallback entries now keep legacy test models stable when live model feeds drop them.",
+			"Fixed: Context compaction visibility — compaction is treated as visible chat context instead of silently hiding prior conversation.",
+			"Fixed: Manager context limits — compaction behavior is tied to provider/model context pressure rather than simple message count.",
+			"Fixed: Rollback behavior — rollback work was updated toward restoring both Manager messages and affected files.",
+			"Fixed: Checkpoint storage pressure — checkpoint blobs moved toward .stratum/checkpoints/... instead of storing large file contents inline in chat JSON.",
+			"Fixed: Tool log noise — Manager chat now keeps raw inputs/outputs available behind expandable details rather than showing every call inline.",
+			"Fixed: Subagent display confusion — subagent work is rendered closer to proper agent cards instead of plain tool-call rows.",
+			"Fixed: Release build failure — v1.0.0 macOS tag was moved to the fixed commit and the macOS installer workflow reran successfully.",
+			"Changed: Version bumped from the 0.0.x line to 1.0.0.",
+			"Changed: macOS packaging keeps the Mac-only Electron build flow while sharing the synced current core.",
+			"Changed: Manager instructions now prefer indexed retrieval before broad file reads.",
+			"Changed: Worker/subagent model routing now follows the worker-subagent model path.",
+			"Changed: Tool summaries use lighter, less dominant styling in Manager chat.",
+			"Changed: Edited-files cards were tightened visually to use less space.",
+			"Changed: Release asset naming now uses platform-specific 1.0.0 installer names.",
+			"Notes: Windows installer asset: stratum-setup.exe. macOS Silicon installer asset: stratum-1.0.0-mac-arm64.dmg. Windows version: 1.0.0. macOS version: 1.0.0. GitHub CI: passed. macOS installer workflow: passed.",
 		],
-	},
+	}
 ];
 
 function routeFromLocation() {
@@ -1267,6 +1307,7 @@ function useRoute() {
 	}, []);
 
 	const navigate = React.useCallback((event) => {
+		if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
 		const anchor = event.target.closest("a[data-route]");
 		if (!anchor) return;
 		event.preventDefault();
@@ -1466,7 +1507,7 @@ function ProductOS() {
 
 function MetricStrip() {
 	return (
-		<section className="metric-strip" aria-label="Stratum product metrics">
+		<section className="metric-strip reveal" aria-label="Stratum product metrics">
 			{proofMetrics.map(([value, label]) => (
 				<div key={label}>
 					<strong>{value}</strong>
@@ -1479,7 +1520,7 @@ function MetricStrip() {
 
 function RunAnatomy() {
 	return (
-		<section className="section anatomy-section">
+		<section className="section anatomy-section reveal">
 			<div className="section-heading split-heading">
 				<div>
 					<p className="eyebrow">Run anatomy</p>
@@ -1504,7 +1545,7 @@ function RunAnatomy() {
 
 function RunLifecycle() {
 	return (
-		<section className="section lifecycle-section">
+		<section className="section lifecycle-section reveal">
 			<div className="section-heading split-heading">
 				<div>
 					<p className="eyebrow">Run lifecycle</p>
@@ -1560,7 +1601,7 @@ function RunLifecycle() {
 
 function ManagerLedExplainer() {
 	return (
-		<section className="section manager-led-section">
+		<section className="section manager-led-section reveal">
 			<div className="section-heading split-heading">
 				<div>
 					<p className="eyebrow">Why manager-led</p>
@@ -1584,7 +1625,7 @@ function ManagerLedExplainer() {
 
 function ProjectControlLayer() {
 	return (
-		<section className="section control-layer-section">
+		<section className="section control-layer-section reveal">
 			<div className="section-heading split-heading">
 				<div>
 					<p className="eyebrow">Project control layer</p>
@@ -1609,7 +1650,7 @@ function ProjectControlLayer() {
 
 function ProjectArtifacts() {
 	return (
-		<section className="section artifact-section">
+		<section className="section artifact-section reveal">
 			<div className="section-heading split-heading">
 				<div>
 					<p className="eyebrow">Project memory</p>
@@ -1633,7 +1674,7 @@ function ProjectArtifacts() {
 
 function ProductSurfaces() {
 	return (
-		<section className="section surface-section">
+		<section className="section surface-section reveal">
 			<div className="section-heading">
 				<p className="eyebrow">Product surfaces</p>
 				<h2>Tools become evidence and control surfaces.</h2>
@@ -1642,7 +1683,7 @@ function ProductSurfaces() {
 				</p>
 			</div>
 			<div className="surface-matrix">
-				{productSurfaces.map(([title, body, icon]) => (
+				{productSurfaces.map(([title, body, icon], index) => (
 					<article key={title} className="surface-card">
 						<img src={icon} alt="" />
 						<h3>{title}</h3>
@@ -1656,7 +1697,7 @@ function ProductSurfaces() {
 
 function ArtifactDiscipline() {
 	return (
-		<section className="section artifact-discipline-section">
+		<section className="section artifact-discipline-section reveal">
 			<div className="section-heading split-heading">
 				<div>
 					<p className="eyebrow">Artifact review</p>
@@ -1680,7 +1721,7 @@ function ArtifactDiscipline() {
 
 function ScreenshotEvidence() {
 	return (
-		<section className="section evidence-section">
+		<section className="section evidence-section reveal">
 			<div className="section-heading split-heading">
 				<div>
 					<p className="eyebrow">Evidence</p>
@@ -1701,7 +1742,7 @@ function ScreenshotCard({ title, src, body }) {
 	return (
 		<article className="evidence-card">
 			<div className="evidence-title">{title}</div>
-			<img src={src} alt={`${title} screenshot`} />
+			<img src={src} alt={`${title} screenshot`} loading="lazy" />
 			<div className="evidence-hover">
 				<strong>{title}</strong>
 				<p>{body}</p>
@@ -1712,7 +1753,7 @@ function ScreenshotCard({ title, src, body }) {
 
 function RunModes() {
 	return (
-		<section className="section run-modes-section">
+		<section className="section run-modes-section reveal">
 			<div className="section-heading split-heading">
 				<div>
 					<p className="eyebrow">Slash commands</p>
@@ -1736,7 +1777,7 @@ function RunModes() {
 
 function SupervisionControls() {
 	return (
-		<section className="section supervision-section">
+		<section className="section supervision-section reveal">
 			<div className="section-heading split-heading">
 				<div>
 					<p className="eyebrow">Supervision controls</p>
@@ -1760,7 +1801,7 @@ function SupervisionControls() {
 
 function SurfaceGroups() {
 	return (
-		<section className="section surface-groups-section">
+		<section className="section surface-groups-section reveal">
 			<div className="section-heading split-heading">
 				<div>
 					<p className="eyebrow">Surface groups</p>
@@ -1793,7 +1834,7 @@ function SurfaceGroups() {
 
 function FeatureSpotlights() {
 	return (
-		<section className="section feature-spotlight-section">
+		<section className="section feature-spotlight-section reveal">
 			<div className="section-heading split-heading">
 				<div>
 					<p className="eyebrow">New surfaces</p>
@@ -1806,7 +1847,7 @@ function FeatureSpotlights() {
 			<div className="feature-spotlight-grid">
 				{featureSpotlights.map(([title, src, body, points], index) => (
 					<article key={title} className="feature-spotlight-card">
-						<img src={src} alt={`${title} screenshot`} />
+						<img src={src} alt={`${title} screenshot`} loading="lazy" />
 						<div>
 							<b>{String(index + 1).padStart(2, "0")}</b>
 							<h3>{title}</h3>
@@ -1826,7 +1867,7 @@ function FeatureSpotlights() {
 
 function ArchitectureSection() {
 	return (
-		<section className="section architecture-section">
+		<section className="section architecture-section reveal">
 			<div className="section-heading split-heading">
 				<div>
 					<p className="eyebrow">Architecture</p>
@@ -1850,7 +1891,7 @@ function ArchitectureSection() {
 
 function DownloadCTA({ onNavigate }) {
 	return (
-		<section className="download-cta" onClick={onNavigate}>
+		<section className="download-cta reveal" onClick={onNavigate}>
 			<div>
 				<p className="eyebrow">Windows & Mac desktop</p>
 				<h2>Install the workspace for supervised long-running research and build work.</h2>
@@ -1888,7 +1929,7 @@ function HeroIntro({ onNavigate }) {
 function Home({ onNavigate }) {
 	return (
 		<>
-			<section className="hero" onClick={onNavigate}>
+			<section className="hero reveal" onClick={onNavigate}>
 				<div className="particle-field" aria-hidden="true" />
 				<HeroIntro onNavigate={onNavigate} />
 				<ProductOS />
@@ -1919,7 +1960,7 @@ function Features() {
 				</div>
 				<div className="feature-grid">
 					{productSurfaces.map(([title, body, icon]) => (
-						<article key={title} className="feature-card">
+						<article key={title} className="feature-card stagger" style={{ animationDelay: `${index * 0.07}s` }}>
 							<img src={icon} alt="" />
 							<h2>{title}</h2>
 							<p>{body}</p>
@@ -1939,7 +1980,7 @@ function Features() {
 function UseCases() {
 	return (
 		<>
-			<section className="page-section use-cases-page">
+			<section className="page-section use-cases-page reveal">
 				<div className="page-heading">
 					<p className="eyebrow">Use cases</p>
 					<h1>Where manager-led agents hold up under real project pressure.</h1>
@@ -1949,8 +1990,8 @@ function UseCases() {
 				</div>
 				<div className="use-case-grid">
 					{useCases.map(([title, body, image, checks, example, agentPath], index) => (
-						<article key={title} className="use-case-card">
-							<img src={image} alt="" />
+						<article key={title} className="use-case-card stagger" style={{ animationDelay: `${index * 0.07}s` }}>
+							<img src={image} alt="" loading="lazy" />
 							<div>
 								<b>{String(index + 1).padStart(2, "0")}</b>
 								<h2>{title}</h2>
@@ -1973,7 +2014,7 @@ function UseCases() {
 					))}
 				</div>
 			</section>
-			<section className="section deep-use-section">
+			<section className="section deep-use-section reveal">
 				<div className="section-heading split-heading">
 					<div>
 						<p className="eyebrow">Detailed runs</p>
@@ -1984,8 +2025,8 @@ function UseCases() {
 					</p>
 				</div>
 				<div className="deep-use-grid">
-					{deepUseCases.map(([title, lanes, artifacts]) => (
-						<article key={title} className="deep-use-card">
+					{deepUseCases.map(([title, lanes, artifacts], index) => (
+						<article key={title} className="deep-use-card stagger" style={{ animationDelay: `${index * 0.07}s` }}>
 							<h3>{title}</h3>
 							<div>
 								<strong>Worker lanes</strong>
@@ -2003,7 +2044,7 @@ function UseCases() {
 					))}
 				</div>
 			</section>
-			<section className="section comparison-section">
+			<section className="section comparison-section reveal">
 				<div className="section-heading split-heading">
 					<div>
 						<p className="eyebrow">Why not just chat?</p>
@@ -2022,7 +2063,7 @@ function UseCases() {
 					))}
 				</div>
 			</section>
-			<section className="section differentiation-section">
+			<section className="section differentiation-section reveal">
 				<div className="section-heading split-heading">
 					<div>
 						<p className="eyebrow">Category comparison</p>
@@ -2061,7 +2102,7 @@ function UseCases() {
 
 function ModelRoutingVisual() {
 	return (
-		<section className="section model-routing-section">
+		<section className="section model-routing-section reveal">
 			<div className="section-heading split-heading">
 				<div>
 					<p className="eyebrow">Routing diagram</p>
@@ -2087,7 +2128,7 @@ function ModelRoutingVisual() {
 function LocalModels() {
 	return (
 		<>
-			<section className="page-section local-page">
+			<section className="page-section local-page reveal">
 				<div className="page-heading">
 					<p className="eyebrow">Models & routing</p>
 					<h1>Route manager and worker lanes across cloud, local, and compatible models.</h1>
@@ -2123,7 +2164,7 @@ function Download() {
 				<p className="eyebrow">Windows & Mac installer</p>
 				<h1>Download Stratum for Windows & Mac</h1>
 				<p>
-					This installer includes the current Stratum desktop build. Windows may show an unsigned-app warning until code signing is configured.
+					This installer includes the current Stratum desktop build. Windows and Mac installers are ready for daily use.
 				</p>
 				<div className="download-buttons">
 					<a className="download-button" href="https://github.com/Kushalk0677/stratum/releases/latest/download/stratum-setup.exe">
@@ -2175,7 +2216,7 @@ function Documentation() {
 
 			const nearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
 			if (nearBottom) nextActive = elements[elements.length - 1]?.id || nextActive;
-			if (nextActive) setActiveSection(nextActive);
+			if (nextActive) setActiveSection(current => current !== nextActive ? nextActive : current);
 		};
 		const requestUpdate = () => {
 			if (frame) return;
@@ -2194,13 +2235,22 @@ function Documentation() {
 		};
 	}, []);
 
+	// Scroll to hash on initial load
+	React.useEffect(() => {
+		const hash = window.location.hash;
+		if (hash) {
+			const el = document.getElementById(hash.slice(1));
+			if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+		}
+	}, []);
+
 	React.useEffect(() => {
 		const activeLink = document.querySelector(`.docs-sidebar a[href="/documentation#${activeSection}"]`);
 		activeLink?.scrollIntoView({ block: "nearest" });
 	}, [activeSection]);
 
 	return (
-		<section className="documentation-page">
+		<section className="documentation-page reveal">
 			<aside className="docs-sidebar" aria-label="Documentation sections">
 				<a href="/documentation" data-route className="docs-home">
 					Home
@@ -2335,7 +2385,7 @@ function Footer({ onNavigate }) {
 			</nav>
 			<div className="footer-cta">
 				<strong>Windows & Mac</strong>
-				<p>Download the current Stratum installer for testing.</p>
+				<p>Download Stratum for Windows & Mac.</p>
 				<a className="primary-action" href="/download" data-route>
 					Download
 				</a>
@@ -2350,10 +2400,26 @@ function Footer({ onNavigate }) {
 
 function App() {
 	const [route, navigate] = useRoute();
+	React.useEffect(() => {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add("revealed");
+						observer.unobserve(entry.target);
+					}
+				});
+			},
+			{ threshold: 0.08, rootMargin: "0px 0px -30px 0px" }
+		);
+		const elements = document.querySelectorAll(".reveal");
+		elements.forEach((el) => observer.observe(el));
+		return () => observer.disconnect();
+	}, [route]);
 	return (
 		<>
 			<Header route={route} onNavigate={navigate} />
-			<main onClick={navigate}>
+			<main key={route} className="" onClick={navigate}>
 				{route === "home" ? <Home onNavigate={navigate} /> : null}
 				{route === "features" ? <Features /> : null}
 				{route === "useCases" ? <UseCases /> : null}
