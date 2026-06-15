@@ -1,5 +1,19 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import { createPortal } from "react-dom";
+import {
+	Counter,
+	Cursor,
+	GrainOverlay,
+	Magnetic,
+	Marquee,
+	Preloader,
+	ScrollProgress,
+	ThreeCanvas,
+	TiltCard,
+	useScrollVar,
+	useSplitHeadings,
+} from "./effects.jsx";
 import "./styles.css";
 
 const navItems = [
@@ -1245,7 +1259,7 @@ const docsSections = [
 			"Changed: Worker panel shows amber blocked status dot and 'waiting for {workerId}' label when a dependency is active.",
 			"Notes: Windows installer asset: stratum-setup.exe. macOS (Silicon) installer asset: stratum-mac-arm64.dmg.",
 		],
-	},,
+	},
 	{
 		id: "v1-0-0",
 		title: "Stratum 1.0.0 Latest",
@@ -1347,6 +1361,7 @@ function Header({ route, onNavigate }) {
 
 	return (
 		<header className={`site-header ${mobileNavOpen ? "mobile-open" : ""}`} onClick={onNavigate}>
+			<div className="header-shell">
 			<a className="brand" href="/" data-route>
 				<img src="/assets/stratum-logo.png" alt="" />
 				<span>Stratum</span>
@@ -1381,21 +1396,24 @@ function Header({ route, onNavigate }) {
 					</div>
 				</div>
 			</nav>
-			<a className="header-download" href="/download" data-route>
-				Download
-			</a>
-			<button
-				className="mobile-menu-button"
-				type="button"
-				aria-label="Toggle navigation"
-				aria-expanded={mobileNavOpen}
-				onClick={() => {
-					closeResources();
-					setMobileNavOpen((open) => !open);
-				}}
-			>
-				<img src="/assets/menu.png" alt="" />
-			</button>
+			<div className="header-actions">
+				<a className="header-download" href="/download" data-route>
+					Download
+				</a>
+				<button
+					className="mobile-menu-button"
+					type="button"
+					aria-label="Toggle navigation"
+					aria-expanded={mobileNavOpen}
+					onClick={() => {
+						closeResources();
+						setMobileNavOpen((open) => !open);
+					}}
+				>
+					<img src="/assets/menu.png" alt="" />
+				</button>
+			</div>
+			</div>
 		</header>
 	);
 }
@@ -1510,7 +1528,7 @@ function MetricStrip() {
 		<section className="metric-strip reveal" aria-label="Stratum product metrics">
 			{proofMetrics.map(([value, label]) => (
 				<div key={label}>
-					<strong>{value}</strong>
+					<Counter value={value} />
 					<span>{label}</span>
 				</div>
 			))}
@@ -1519,27 +1537,78 @@ function MetricStrip() {
 }
 
 function RunAnatomy() {
+	const pinRef = React.useRef(null);
+	useScrollVar(pinRef, "--pin", "pin");
 	return (
-		<section className="section anatomy-section reveal">
-			<div className="section-heading split-heading">
-				<div>
-					<p className="eyebrow">Run anatomy</p>
-					<h2>One project run moves from goal to reviewable artifact.</h2>
+		<>
+			<section className="section anatomy-section reveal">
+				<div className="section-heading split-heading">
+					<div>
+						<p className="eyebrow">Run anatomy</p>
+						<h2>One project run moves from goal to reviewable artifact.</h2>
+					</div>
+					<p>
+						Stratum makes the full loop visible: what the user asked for, how the manager planned it, which workers acted, what tools ran, what was verified, and what memory stayed behind.
+					</p>
 				</div>
-				<p>
-					Stratum makes the full loop visible: what the user asked for, how the manager planned it, which workers acted, what tools ran, what was verified, and what memory stayed behind.
-				</p>
+			</section>
+			<div className="anatomy-pin" ref={pinRef}>
+				<div className="anatomy-stage">
+					<div className="anatomy-rail">
+						{runAnatomySteps.map(([title, body], index) => (
+							<article key={title} className="anatomy-step">
+								<i aria-hidden="true">{String(index + 1).padStart(2, "0")}</i>
+								<b>{String(index + 1).padStart(2, "0")}</b>
+								<strong>{title}</strong>
+								<p>{body}</p>
+							</article>
+						))}
+						<div className="anatomy-cap" aria-hidden="true">
+							<strong>Run complete</strong>
+							<span>Evidence reviewed · memory written</span>
+						</div>
+					</div>
+					<div className="anatomy-progressbar" aria-hidden="true">
+						<i />
+					</div>
+				</div>
 			</div>
-			<div className="anatomy-track">
-				{runAnatomySteps.map(([title, body], index) => (
-					<article key={title} className="anatomy-step">
-						<b>{String(index + 1).padStart(2, "0")}</b>
-						<strong>{title}</strong>
-						<p>{body}</p>
-					</article>
-				))}
+		</>
+	);
+}
+
+const consoleLines = [
+	["manager.plan", "acceptance checks: build, routes, review, artifacts"],
+	["runtime.worker", "bounded implementation task assigned inside project folder"],
+	["review.worker", "verify diffs, logs, screenshots, and release blockers", "warning-line"],
+	["memory.write", "plan.md and notes updated with durable decisions"],
+];
+
+function RunConsole() {
+	const [activeLine, setActiveLine] = React.useState(0);
+	React.useEffect(() => {
+		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
+		const id = window.setInterval(() => setActiveLine((line) => (line + 1) % consoleLines.length), 2300);
+		return () => window.clearInterval(id);
+	}, []);
+	return (
+		<div className="run-console">
+			<div className="console-top">
+				<span>run envelope</span>
+				<strong>research-paper / release</strong>
 			</div>
-		</section>
+			{consoleLines.map(([label, detail, extra], index) => (
+				<div key={label} className={`console-line ${extra || ""} ${index === activeLine ? "active-line" : ""}`}>
+					<b>{label}</b>
+					<span>{detail}</span>
+				</div>
+			))}
+			<div className="console-meter">
+				<span>context used</span>
+				<strong>42k / 128k</strong>
+				<i />
+			</div>
+		</div>
 	);
 }
 
@@ -1567,33 +1636,7 @@ function RunLifecycle() {
 						</article>
 					))}
 				</div>
-				<div className="run-console">
-					<div className="console-top">
-						<span>run envelope</span>
-						<strong>research-paper / release</strong>
-					</div>
-					<div className="console-line active-line">
-						<b>manager.plan</b>
-						<span>acceptance checks: build, routes, review, artifacts</span>
-					</div>
-					<div className="console-line">
-						<b>runtime.worker</b>
-						<span>bounded implementation task assigned inside project folder</span>
-					</div>
-					<div className="console-line warning-line">
-						<b>review.worker</b>
-						<span>verify diffs, logs, screenshots, and release blockers</span>
-					</div>
-					<div className="console-line">
-						<b>memory.write</b>
-						<span>plan.md and notes updated with durable decisions</span>
-					</div>
-					<div className="console-meter">
-						<span>context used</span>
-						<strong>42k / 128k</strong>
-						<i />
-					</div>
-				</div>
+				<RunConsole />
 			</div>
 		</section>
 	);
@@ -1637,11 +1680,11 @@ function ProjectControlLayer() {
 			</div>
 			<div className="control-layer-grid">
 				{controlLayerCards.map(([title, body, icon]) => (
-					<article key={title} className="control-layer-card">
+					<TiltCard key={title} className="control-layer-card">
 						<img src={icon} alt="" />
 						<h3>{title}</h3>
 						<p>{body}</p>
-					</article>
+					</TiltCard>
 				))}
 			</div>
 		</section>
@@ -1683,12 +1726,12 @@ function ProductSurfaces() {
 				</p>
 			</div>
 			<div className="surface-matrix">
-				{productSurfaces.map(([title, body, icon], index) => (
-					<article key={title} className="surface-card">
+				{productSurfaces.map(([title, body, icon]) => (
+					<TiltCard key={title} className="surface-card">
 						<img src={icon} alt="" />
 						<h3>{title}</h3>
 						<p>{body}</p>
-					</article>
+					</TiltCard>
 				))}
 			</div>
 		</section>
@@ -1720,34 +1763,39 @@ function ArtifactDiscipline() {
 }
 
 function ScreenshotEvidence() {
+	const rows = [screenshotEvidence.slice(0, 6), screenshotEvidence.slice(6)];
 	return (
-		<section className="section evidence-section reveal">
-			<div className="section-heading split-heading">
-				<div>
-					<p className="eyebrow">Evidence</p>
-					<h2>Screenshots that show the run staying inspectable.</h2>
+		<>
+			<section className="section evidence-section reveal">
+				<div className="section-heading split-heading">
+					<div>
+						<p className="eyebrow">Evidence</p>
+						<h2>Screenshots that show the run staying inspectable.</h2>
+					</div>
+					<p>Each screenshot is evidence of a project-bound surface: manager state, workers, review, permissions, memory, models, updates, and artifacts.</p>
 				</div>
-				<p>Each screenshot is evidence of a project-bound surface: manager state, workers, review, permissions, memory, models, updates, and artifacts.</p>
-			</div>
-			<div className="evidence-grid">
-				{screenshotEvidence.map(([title, src, body]) => (
-					<ScreenshotCard key={title} title={title} src={src} body={body} />
+			</section>
+			<div className="shot-wall reveal" aria-label="Stratum product screenshots">
+				{rows.map((row, rowIndex) => (
+					<Marquee
+						key={rowIndex}
+						items={row}
+						duration={rowIndex ? 72 : 58}
+						reverse={rowIndex === 1}
+						render={([title, src, body]) => (
+							<figure className="shot-card">
+								<figcaption className="shot-chrome">{title}</figcaption>
+								<img src={src} alt={`${title} screenshot`} loading="lazy" />
+								<div className="shot-hover">
+									<strong>{title}</strong>
+									<p>{body}</p>
+								</div>
+							</figure>
+						)}
+					/>
 				))}
 			</div>
-		</section>
-	);
-}
-
-function ScreenshotCard({ title, src, body }) {
-	return (
-		<article className="evidence-card">
-			<div className="evidence-title">{title}</div>
-			<img src={src} alt={`${title} screenshot`} loading="lazy" />
-			<div className="evidence-hover">
-				<strong>{title}</strong>
-				<p>{body}</p>
-			</div>
-		</article>
+		</>
 	);
 }
 
@@ -1765,10 +1813,10 @@ function RunModes() {
 			</div>
 			<div className="run-mode-grid">
 				{slashCommands.map(([command, body]) => (
-					<article key={command} className="run-mode-card">
+					<TiltCard key={command} className="run-mode-card">
 						<code>{command}</code>
 						<p>{body}</p>
-					</article>
+					</TiltCard>
 				))}
 			</div>
 		</section>
@@ -1799,7 +1847,53 @@ function SupervisionControls() {
 	);
 }
 
+function SurfaceGroupOverlay({ group, open }) {
+	if (typeof document === "undefined" || !group) return null;
+	const [, images, labels] = group;
+	return createPortal(
+		<div className={`surface-group-overlay${open ? " is-open" : ""}`} aria-hidden="true">
+			<div className="surface-group-overlay-scrim" />
+			<div className="surface-group-overlay-row">
+				{images.map((src, index) => (
+					<figure key={src} className="surface-group-overlay-item" style={{ "--i": index }}>
+						<img src={src} alt="" />
+						<figcaption>{labels[index]}</figcaption>
+					</figure>
+				))}
+			</div>
+		</div>,
+		document.body
+	);
+}
+
 function SurfaceGroups() {
+	const [active, setActive] = React.useState(null);
+	const lastRef = React.useRef(0);
+	const closeTimer = React.useRef(null);
+	const canHover =
+		typeof window !== "undefined" && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+	const open = (index) => {
+		if (!canHover) return;
+		if (closeTimer.current) {
+			window.clearTimeout(closeTimer.current);
+			closeTimer.current = null;
+		}
+		lastRef.current = index;
+		setActive(index);
+	};
+	const scheduleClose = (index) => {
+		if (closeTimer.current) window.clearTimeout(closeTimer.current);
+		closeTimer.current = window.setTimeout(() => setActive((cur) => (cur === index ? null : cur)), 90);
+	};
+
+	React.useEffect(
+		() => () => {
+			if (closeTimer.current) window.clearTimeout(closeTimer.current);
+		},
+		[]
+	);
+
 	return (
 		<section className="section surface-groups-section reveal">
 			<div className="section-heading split-heading">
@@ -1808,15 +1902,20 @@ function SurfaceGroups() {
 					<h2>Dedicated panels map to the jobs inside a run.</h2>
 				</div>
 				<p>
-					The screenshots are not just UI inventory. They show how Stratum separates inspection, building, review, and operations into visible surfaces.
+					The screenshots are not just UI inventory. They show how Stratum separates inspection, building, review, and operations into visible surfaces. Hover a group to blow its surfaces up full screen.
 				</p>
 			</div>
 			<div className="surface-group-grid">
-				{surfaceGroups.map(([title, images, labels]) => (
-					<article key={title} className="surface-group-card">
-						<div className="surface-group-images">
-							{images.map((src, index) => (
-								<img key={`${title}-${src}`} src={src} alt={`${labels[index]} screenshot`} />
+				{surfaceGroups.map(([title, images, labels], index) => (
+					<article
+						key={title}
+						className="surface-group-card"
+						onPointerEnter={() => open(index)}
+						onPointerLeave={() => scheduleClose(index)}
+					>
+						<div className="surface-group-fan">
+							{images.map((src, i) => (
+								<img key={`${title}-${src}`} src={src} alt={`${labels[i]} screenshot`} loading="lazy" />
 							))}
 						</div>
 						<h3>{title}</h3>
@@ -1828,6 +1927,7 @@ function SurfaceGroups() {
 					</article>
 				))}
 			</div>
+			<SurfaceGroupOverlay group={surfaceGroups[lastRef.current]} open={active !== null} />
 		</section>
 	);
 }
@@ -1866,6 +1966,8 @@ function FeatureSpotlights() {
 }
 
 function ArchitectureSection() {
+	const pinRef = React.useRef(null);
+	useScrollVar(pinRef, "--pin", "pin");
 	return (
 		<section className="section architecture-section reveal">
 			<div className="section-heading split-heading">
@@ -1874,16 +1976,31 @@ function ArchitectureSection() {
 					<h2>A manager-directed execution layer for project work.</h2>
 				</div>
 				<p>
-					The interface is organized around one control plane: the manager can delegate, verify, retry failed subtasks, and preserve useful state.
+					The interface is organized around one control plane: the manager can delegate, verify, retry failed subtasks, and preserve useful state. Scroll to pull the strata apart.
 				</p>
 			</div>
-			<div className="architecture-stack">
-				{architectureLayers.map(([title, body], index) => (
-					<div key={title} className={`architecture-layer architecture-layer-${index + 1}`}>
-						<strong>{title}</strong>
-						<span>{body}</span>
+			<div className="strata-pin" ref={pinRef}>
+				<div className="strata-stage">
+					<div className="strata-scene" aria-hidden="true">
+						{architectureLayers.map(([title], index) => (
+							<div key={title} className={`strata-slab strata-slab-${index + 1}`} style={{ "--i": index }}>
+								<i />
+								<span>{title}</span>
+							</div>
+						))}
 					</div>
-				))}
+					<div className="strata-legend">
+						{architectureLayers.map(([title, body], index) => (
+							<div key={title} className="strata-item" style={{ "--i": index }}>
+								<b>{String(index + 1).padStart(2, "0")}</b>
+								<div>
+									<strong>{title}</strong>
+									<span>{body}</span>
+								</div>
+							</div>
+						))}
+					</div>
+				</div>
 			</div>
 		</section>
 	);
@@ -1892,13 +2009,18 @@ function ArchitectureSection() {
 function DownloadCTA({ onNavigate }) {
 	return (
 		<section className="download-cta reveal" onClick={onNavigate}>
-			<div>
-				<p className="eyebrow">Windows & Mac desktop</p>
-				<h2>Install the workspace for supervised long-running research and build work.</h2>
+			<div className="cta-inner">
+				<span className="cta-beam" aria-hidden="true" />
+				<div>
+					<p className="eyebrow">Windows &amp; Mac desktop</p>
+					<h2>Install the workspace for supervised long-running research and build work.</h2>
+				</div>
+				<Magnetic>
+					<a className="primary-action" href="/download" data-route>
+						Download Stratum
+					</a>
+				</Magnetic>
 			</div>
-			<a className="primary-action" href="/download" data-route>
-				Download Stratum
-			</a>
 		</section>
 	);
 }
@@ -1906,18 +2028,22 @@ function DownloadCTA({ onNavigate }) {
 function HeroIntro({ onNavigate }) {
 	return (
 		<div className="hero-copy" onClick={onNavigate}>
-			<div className="hero-brand-lockup" aria-label="Stratum">
-				<img className="hero-logo" src="/assets/app-logo.png" alt="" />
-				<span>Stratum</span>
-			</div>
-			<h1>Manager-led AI workspaces for long-running projects.</h1>
+			<p className="hero-eyebrow">
+				<span className="pulse-dot" aria-hidden="true" />
+				Stratum 1.0 — now on Windows &amp; macOS
+			</p>
+			<h1>
+				Manager-led AI workspaces for <em>long-running</em> projects.
+			</h1>
 			<p className="hero-text">
 				Stratum is a desktop workspace where the user supervises one manager, visible worker lanes, dedicated tools, reviewable artifacts, and project memory that carries forward.
 			</p>
 			<div className="hero-actions">
-				<a className="primary-action" href="/download" data-route>
-					Download for Windows & Mac
-				</a>
+				<Magnetic>
+					<a className="primary-action" href="/download" data-route>
+						Download for Windows &amp; Mac
+					</a>
+				</Magnetic>
 				<a className="secondary-action" href="/features" data-route>
 					Explore the system
 				</a>
@@ -1926,14 +2052,43 @@ function HeroIntro({ onNavigate }) {
 	);
 }
 
+function ProviderMarquee() {
+	const providerNames = localProviders.slice(1).map(([name]) => name);
+	return (
+		<section className="provider-strip reveal" aria-label="Supported model providers">
+			<p>
+				Routes manager and worker lanes across <strong>{providerNames.length} providers</strong>
+			</p>
+			<Marquee
+				items={providerNames}
+				duration={44}
+				label="Provider list"
+				render={(name) => <span className="provider-mark">{name}</span>}
+			/>
+		</section>
+	);
+}
+
+function HeroStage() {
+	const stageRef = React.useRef(null);
+	useScrollVar(stageRef, "--sp", "enter");
+	return (
+		<div className="hero-stage" ref={stageRef}>
+			<ProductOS />
+		</div>
+	);
+}
+
 function Home({ onNavigate }) {
 	return (
 		<>
-			<section className="hero reveal" onClick={onNavigate}>
-				<div className="particle-field" aria-hidden="true" />
+			<section className="hero" onClick={onNavigate}>
+				<ThreeCanvas scene="mountStrataScene" className="hero-canvas" />
+				<div className="hero-veil" aria-hidden="true" />
 				<HeroIntro onNavigate={onNavigate} />
-				<ProductOS />
+				<HeroStage />
 			</section>
+			<ProviderMarquee />
 			<MetricStrip />
 			<RunAnatomy />
 			<RunLifecycle />
@@ -1960,11 +2115,11 @@ function Features() {
 				</div>
 				<div className="feature-grid">
 					{productSurfaces.map(([title, body, icon], index) => (
-						<article key={title} className="feature-card stagger" style={{ animationDelay: `${index * 0.07}s` }}>
+						<TiltCard key={title} className="feature-card stagger" style={{ animationDelay: `${index * 0.07}s` }}>
 							<img src={icon} alt="" />
 							<h2>{title}</h2>
 							<p>{body}</p>
-						</article>
+						</TiltCard>
 					))}
 				</div>
 			</section>
@@ -2114,11 +2269,11 @@ function ModelRoutingVisual() {
 			</div>
 			<div className="model-routing-grid">
 				{modelRoutingDiagram.map(([lane, model, body]) => (
-					<article key={lane} className="model-routing-card">
+					<TiltCard key={lane} className="model-routing-card">
 						<strong>{lane}</strong>
 						<span>{model}</span>
 						<p>{body}</p>
-					</article>
+					</TiltCard>
 				))}
 			</div>
 		</section>
@@ -2159,6 +2314,7 @@ function LocalModels() {
 function Download() {
 	return (
 		<section className="download-page">
+			<ThreeCanvas scene="mountOrbScene" className="download-canvas" />
 			<div className="download-panel">
 				<img src="/assets/app-logo.png" alt="Stratum logo" />
 				<p className="eyebrow">Windows & Mac installer</p>
@@ -2343,6 +2499,7 @@ function Documentation() {
 function Footer({ onNavigate }) {
 	return (
 		<footer className="site-footer" onClick={onNavigate}>
+			<div className="footer-grid">
 			<div className="footer-brand">
 				<a className="brand" href="/" data-route>
 					<img src="/assets/stratum-logo.png" alt="" />
@@ -2390,9 +2547,13 @@ function Footer({ onNavigate }) {
 					Download
 				</a>
 			</div>
+			</div>
 			<div className="footer-bottom">
 				<span>Made by Stratum for Stratum</span>
 				<span>Built for manager-led agent runs.</span>
+			</div>
+			<div className="footer-wordmark" aria-hidden="true">
+				STRATUM
 			</div>
 		</footer>
 	);
@@ -2400,6 +2561,7 @@ function Footer({ onNavigate }) {
 
 function App() {
 	const [route, navigate] = useRoute();
+	useSplitHeadings(route);
 	React.useEffect(() => {
 		const observer = new IntersectionObserver(
 			(entries) => {
@@ -2410,7 +2572,7 @@ function App() {
 					}
 				});
 			},
-			{ threshold: 0.08, rootMargin: "0px 0px -30px 0px" }
+			{ threshold: 0, rootMargin: "0px 0px -40px 0px" }
 		);
 		const elements = document.querySelectorAll(".reveal");
 		elements.forEach((el) => observer.observe(el));
@@ -2418,6 +2580,10 @@ function App() {
 	}, [route]);
 	return (
 		<>
+			<Preloader />
+			<Cursor />
+			<ScrollProgress />
+			<GrainOverlay />
 			<Header route={route} onNavigate={navigate} />
 			<main key={route} className="" onClick={navigate}>
 				{route === "home" ? <Home onNavigate={navigate} /> : null}
