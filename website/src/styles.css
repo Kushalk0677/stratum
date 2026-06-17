@@ -2296,9 +2296,9 @@ main {
 	z-index: 2;
 }
 
-/* Hover fan-out: three surfaces rest as an overlapping deck, then burst
-   apart — scaling up and spreading well past the card — the instant the
-   card is hovered, so each screenshot is large enough to actually read. */
+/* Preview strip: screenshots rest as a slightly overlapped in-card deck,
+   while hover hands off the detailed viewing to the full-screen carousel
+   overlay instead of fanning the images far outside the card. */
 .surface-group-fan {
 	position: relative;
 	z-index: 0;
@@ -2346,9 +2346,10 @@ main {
 	transform: translateX(-20%) translateY(-5px) rotate(3deg) scale(0.94);
 }
 
-/* ----- Full-screen surface burst ----------------------------------------
-   Hovering a card portals a screen-filling layer to <body>: the three
-   screenshots blown up across the whole viewport over a dimmed backdrop. */
+/* ----- Full-screen surface carousel -------------------------------------
+   Hovering a card portals a screen-filling layer to <body>: the active
+   group's screenshots cycle through a single large carousel frame over a
+   dimmed backdrop. */
 .surface-group-overlay {
 	position: fixed;
 	inset: 0;
@@ -2376,56 +2377,71 @@ main {
 	-webkit-backdrop-filter: blur(5px) saturate(115%);
 }
 
-.surface-group-overlay-row {
+.surface-group-overlay-carousel {
 	position: relative;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: clamp(12px, 2.2vw, 34px);
-	width: 100%;
-	padding: 0 clamp(20px, 3.5vw, 64px);
+	display: grid;
+	gap: 18px;
+	justify-items: center;
+	width: min(72vw, 960px);
+	padding: 0 clamp(20px, 4vw, 56px);
 	transform: translateY(22px) scale(0.96);
 	transition: transform 0.44s var(--ease-out);
 }
 
-.surface-group-overlay.is-open .surface-group-overlay-row {
+.surface-group-overlay.is-open .surface-group-overlay-carousel {
 	transform: translateY(0) scale(1);
 }
 
-.surface-group-overlay-item {
-	flex: 1 1 0;
-	min-width: 0;
-	max-width: 34vw;
+.surface-group-overlay-frame {
+	width: 100%;
+	margin: 0;
 	display: grid;
-	gap: 12px;
+	gap: 14px;
 	justify-items: center;
-	transform: translateY(16px);
-	opacity: 0;
-	transition: transform 0.5s var(--ease-out), opacity 0.5s var(--ease-out);
-	transition-delay: calc(var(--i) * 0.06s);
 }
 
-.surface-group-overlay.is-open .surface-group-overlay-item {
-	transform: translateY(0);
-	opacity: 1;
-}
-
-.surface-group-overlay-item img {
+.surface-group-overlay-frame img {
 	width: 100%;
 	aspect-ratio: 16 / 10;
 	object-fit: cover;
 	object-position: top left;
 	border: 1px solid rgba(255, 255, 255, 0.16);
-	border-radius: 16px;
+	border-radius: 20px;
 	background: #fff;
 	box-shadow: 0 40px 90px -28px rgba(0, 0, 0, 0.7);
 }
 
-.surface-group-overlay-item figcaption {
+.surface-group-overlay-frame figcaption {
 	font-family: var(--font-mono);
-	font-size: clamp(11px, 1vw, 14px);
-	letter-spacing: 0.02em;
-	color: rgba(255, 255, 255, 0.92);
+	font-size: clamp(12px, 1vw, 14px);
+	letter-spacing: 0.04em;
+	color: rgba(255, 255, 255, 0.94);
+}
+
+.surface-group-overlay-rail {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+}
+
+.surface-group-overlay-rail span {
+	padding: 7px 12px;
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.08);
+	font-family: var(--font-mono);
+	font-size: 12px;
+	letter-spacing: 0.03em;
+	color: rgba(255, 255, 255, 0.72);
+	transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.surface-group-overlay-rail span.is-active {
+	border-color: rgba(255, 255, 255, 0.34);
+	background: rgba(255, 255, 255, 0.16);
+	color: #fff;
+	transform: translateY(-1px);
 }
 
 .surface-group-card h3 {
@@ -3368,6 +3384,7 @@ main {
 	gap: 10px;
 	align-content: start;
 	justify-items: start;
+	min-width: 0;
 	padding: 24px;
 	border: 1px solid var(--line);
 	border-radius: var(--radius-md);
@@ -3581,6 +3598,34 @@ main {
 	.docs-home {
 		grid-column: 1 / -1;
 	}
+
+	.footer-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.footer-cta {
+		grid-column: 1 / -1;
+		grid-template-columns: minmax(0, 1fr) auto;
+		grid-template-areas:
+			"title action"
+			"copy action";
+			column-gap: 24px;
+			align-items: center;
+	}
+
+	.footer-cta strong {
+		grid-area: title;
+	}
+
+	.footer-cta p {
+		grid-area: copy;
+		max-width: 36ch;
+	}
+
+	.footer-cta .primary-action {
+		grid-area: action;
+		max-width: 100%;
+	}
 }
 
 @media (max-width: 700px) {
@@ -3636,6 +3681,20 @@ main {
 
 	.footer-grid {
 		grid-template-columns: 1fr;
+	}
+
+	.footer-cta {
+		grid-template-columns: 1fr;
+		grid-template-areas:
+			"title"
+			"copy"
+			"action";
+		column-gap: 0;
+		align-items: start;
+	}
+
+	.footer-cta .primary-action {
+		width: 100%;
 	}
 
 	.hero-eyebrow {

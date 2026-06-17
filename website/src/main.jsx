@@ -104,9 +104,9 @@ const featureSpotlights = [
 ];
 
 const proofMetrics = [
-	["5", "visible workers"],
+	["11", "visible workers"],
 	["128K", "tracked context"],
-	["1.2B", "project tokens tracked"],
+	["22B", "project tokens tracked"],
 	["850+", "model definitions"],
 ];
 
@@ -1847,19 +1847,27 @@ function SupervisionControls() {
 	);
 }
 
-function SurfaceGroupOverlay({ group, open }) {
+function SurfaceGroupOverlay({ group, open, slide }) {
 	if (typeof document === "undefined" || !group) return null;
-	const [, images, labels] = group;
+
+	const [title, images, labels] = group;
+	const activeIndex = slide % images.length;
+
 	return createPortal(
 		<div className={`surface-group-overlay${open ? " is-open" : ""}`} aria-hidden="true">
 			<div className="surface-group-overlay-scrim" />
-			<div className="surface-group-overlay-row">
-				{images.map((src, index) => (
-					<figure key={src} className="surface-group-overlay-item" style={{ "--i": index }}>
-						<img src={src} alt="" />
-						<figcaption>{labels[index]}</figcaption>
-					</figure>
-				))}
+			<div className="surface-group-overlay-carousel">
+				<figure className="surface-group-overlay-frame" key={`${title}-${activeIndex}`}>
+					<img src={images[activeIndex]} alt="" />
+					<figcaption>{labels[activeIndex]}</figcaption>
+				</figure>
+				<div className="surface-group-overlay-rail">
+					{labels.map((label, index) => (
+						<span key={label} className={index === activeIndex ? "is-active" : ""}>
+							{label}
+						</span>
+					))}
+				</div>
 			</div>
 		</div>,
 		document.body
@@ -1868,6 +1876,7 @@ function SurfaceGroupOverlay({ group, open }) {
 
 function SurfaceGroups() {
 	const [active, setActive] = React.useState(null);
+	const [slide, setSlide] = React.useState(0);
 	const lastRef = React.useRef(0);
 	const closeTimer = React.useRef(null);
 	const canHover =
@@ -1880,19 +1889,26 @@ function SurfaceGroups() {
 			closeTimer.current = null;
 		}
 		lastRef.current = index;
+		setSlide(0);
 		setActive(index);
 	};
+
 	const scheduleClose = (index) => {
 		if (closeTimer.current) window.clearTimeout(closeTimer.current);
 		closeTimer.current = window.setTimeout(() => setActive((cur) => (cur === index ? null : cur)), 90);
 	};
 
-	React.useEffect(
-		() => () => {
-			if (closeTimer.current) window.clearTimeout(closeTimer.current);
-		},
-		[]
-	);
+	const activeImageCount = active === null ? 0 : surfaceGroups[active][1].length;
+
+	React.useEffect(() => {
+		if (activeImageCount < 2) return undefined;
+		const timer = window.setInterval(() => setSlide((cur) => (cur + 1) % activeImageCount), 1600);
+		return () => window.clearInterval(timer);
+	}, [activeImageCount]);
+
+	React.useEffect(() => () => {
+		if (closeTimer.current) window.clearTimeout(closeTimer.current);
+	}, []);
 
 	return (
 		<section className="section surface-groups-section reveal">
@@ -1902,7 +1918,7 @@ function SurfaceGroups() {
 					<h2>Dedicated panels map to the jobs inside a run.</h2>
 				</div>
 				<p>
-					The screenshots are not just UI inventory. They show how Stratum separates inspection, building, review, and operations into visible surfaces. Hover a group to blow its surfaces up full screen.
+					The screenshots are not just UI inventory. They show how Stratum separates inspection, building, review, and operations into visible surfaces. Hover a group to preview its surfaces in a focused carousel.
 				</p>
 			</div>
 			<div className="surface-group-grid">
@@ -1927,7 +1943,7 @@ function SurfaceGroups() {
 					</article>
 				))}
 			</div>
-			<SurfaceGroupOverlay group={surfaceGroups[lastRef.current]} open={active !== null} />
+			<SurfaceGroupOverlay group={surfaceGroups[lastRef.current]} open={active !== null} slide={slide} />
 		</section>
 	);
 }
