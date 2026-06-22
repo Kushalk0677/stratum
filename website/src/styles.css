@@ -501,7 +501,7 @@ main {
 	display: grid;
 	grid-template-columns: 220px 1fr;
 	gap: 24px;
-	width: min(640px, calc(100vw - 48px));
+	width: min(760px, calc(100vw - 48px));
 	padding: 26px;
 	border: 1px solid var(--line);
 	border-radius: var(--radius-lg);
@@ -535,6 +535,7 @@ main {
 	gap: 3px;
 	padding: 10px 14px;
 	border-radius: var(--radius-sm);
+	min-width: 0;
 	transition: background-color 0.2s ease;
 }
 
@@ -552,6 +553,7 @@ main {
 	font-size: 12.5px;
 	line-height: 1.45;
 	color: var(--ink-3);
+	overflow-wrap: break-word;
 }
 
 .mobile-menu-button {
@@ -3089,7 +3091,7 @@ main {
 
 .documentation-page {
 	display: grid;
-	grid-template-columns: 250px minmax(0, 1fr) 220px;
+	grid-template-columns: 270px minmax(0, 1fr) 200px;
 	gap: clamp(24px, 3.5vw, 56px);
 	max-width: 1380px;
 	margin: 0 auto;
@@ -3104,6 +3106,7 @@ main {
 	align-content: start;
 	max-height: calc(100vh - 130px);
 	overflow-y: auto;
+	overflow-x: clip;
 	padding-right: 10px;
 	scrollbar-width: thin;
 }
@@ -3143,9 +3146,10 @@ main {
 	position: relative;
 	padding: 6px 14px;
 	border-left: 2px solid transparent;
-	border-radius: 0 8px 8px 0;
+	border-radius: 8px;
 	font-size: 13px;
 	color: var(--ink-2);
+	word-break: break-word;
 	transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
@@ -3450,7 +3454,7 @@ main {
 	}
 
 	.documentation-page {
-		grid-template-columns: 240px minmax(0, 1fr);
+		grid-template-columns: 260px minmax(0, 1fr);
 	}
 
 	.docs-on-page {

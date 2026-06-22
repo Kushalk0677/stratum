@@ -413,6 +413,10 @@ const docsNavigation = [
 			["Models and API keys", "models-keys"],
 			["Models and routing", "local-models-docs"],
 			["Slash commands", "run-modes-docs"],
+			["Goal lifecycle", "goal-lifecycle"],
+			["Reminders", "reminders-docs"],
+			["Watchers and conversations", "watchers-docs"],
+			["LinkedIn campaigns", "linkedin-docs"],
 			["Project memory", "project-memory"],
 			["Project artifacts", "project-artifacts-docs"],
 			["Artifact review", "artifact-review-docs"],
@@ -432,6 +436,8 @@ const docsNavigation = [
 			["Surface groups", "surface-groups-docs"],
 			["File tree", "file-tree-docs"],
 			["Browser", "browser-docs"],
+			["Browser agent", "browser-agent-docs"],
+			["Desktop automation", "desktop-automation-docs"],
 			["Terminal", "terminal-docs"],
 			["LaTeX", "latex-docs"],
 			["LaTeX workflow", "latex-workflow-deep"],
@@ -440,6 +446,10 @@ const docsNavigation = [
 			["Notes and todos", "notes-todos-docs"],
 			["Rollback and fork", "rollback-docs"],
 			["GitHub and releases", "github-releases"],
+			["Code indexing", "code-indexing-docs"],
+			["Skills", "skills-docs"],
+			["Social browser skills", "social-skills-docs"],
+			["Remote manager", "remote-manager-docs"],
 			["Monitor backdoor", "monitor-backdoor"],
 		],
 	},
@@ -449,7 +459,8 @@ const docsNavigation = [
 			["Changelog", "changelog"],
 			["Support", "support"],
 			["Press", "press"],
-			["Releases", "v0-0-3"],
+			["v1.0.1", "v1-0-1"],
+			["v1.0.0", "v1-0-0"],
 		],
 	},
 ];
@@ -477,7 +488,7 @@ const docsSections = [
 		id: "getting-started",
 		title: "Getting started",
 		body: [
-			"Install Stratum on Windows or Mac, open a project folder, choose a manager model, and send a goal. Stratum creates the manager and worker lanes for that project.",
+			"Install Stratum on Windows, Mac or Linux, open a project folder, choose a manager model, and send a goal. Stratum creates the manager and worker lanes for that project.",
 			"For first-run testing, use a cloud model for the manager and a cheaper or local model for workers. This keeps planning strong while reducing token spend.",
 		],
 		steps: [
@@ -753,6 +764,68 @@ const docsSections = [
 		],
 	},
 	{
+		id: "goal-lifecycle",
+		title: "Goal lifecycle",
+		body: [
+			"A goal in Stratum is a persistent task that the manager works on until completion. Goals are created with the /goal or /handsfree slash commands and have a visible lifecycle: active, paused, completed, blocked, or aborted.",
+			"The /goal command tells the manager to keep making progress until the exact success criteria are met. The manager delegates to workers, verifies results, reruns failed subtasks, and only stops when the goal is genuinely achieved or blocked. Use /handsfree for autonomous iteration where the manager looks for worthwhile improvements beyond the first acceptable result, including an independent final review before completion.",
+		],
+		points: [
+			"/goal: run until the task is complete. Delegate to workers, verify results, retry failed subtasks only on worker error, and finish with a completion summary.",
+			"/handsfree: autonomous mode. Before every completion attempt the manager delegates an independent final review and critique, addresses findings, and repeats the cycle until both checks pass.",
+			"Goal states: active (running), paused (waiting for user input), completed (success), blocked (cannot proceed), aborted (stopped by user).",
+			"Max continuation limits prevent runaway runs — the manager respects a maximum number of continuations per goal.",
+			"Goal state is tracked in the run envelope and visible in the manager-only chat. Remote manager controls can pause, resume, or end a goal from an external device.",
+		],
+	},
+	{
+		id: "reminders-docs",
+		title: "Reminders",
+		body: [
+			"Reminders let the manager schedule future tasks that autowake the chat when due. This is useful for recurring checks, scheduled workflows, long-running experiment monitoring, and follow-up tasks that should not be forgotten.",
+			"A reminder can be one-time or repeat on an interval. When the due time arrives, Stratum sends the reminder prompt back to the manager through the normal queue, effectively resuming work at the scheduled moment.",
+		],
+		points: [
+			"Create with create_reminder: specify title, prompt, due time, and optional repeat interval.",
+			"List active reminders with list_reminders, delete with delete_reminder.",
+			"Reminders persist across app restarts — they are stored in the project's reminder database.",
+			"Useful for: daily dependency checks, weekly release testing, experiment progress checks, scheduled reports.",
+			"Reminders can be created by both the manager and the user.",
+		],
+	},
+	{
+		id: "watchers-docs",
+		title: "Watchers and conversations",
+		body: [
+			"Watchers and conversation agents let Stratum monitor and participate in online communities directly from the workspace. They support Discord, Reddit, and generic web pages.",
+			"A watcher monitors a link for conversation-content changes and queues activity for the manager when new messages appear. It has no periodic turns — it only wakes after a confirmed change. An active conversation agent remains resident in the browser, uses its own transcript, and replies autonomously within the configured scope.",
+		],
+		points: [
+			"Watchers: monitor Discord channels, Reddit threads, or any web page. When new content is detected, the manager is notified and can respond.",
+			"Active conversation agents: resident agents that inspect and reply within a conversation thread using their own model calls. Separate transcript from the main manager chat.",
+			"Platform support: Discord (browser-based), Reddit (old Reddit workflow), generic web pages.",
+			"Safety features: daily reply caps, quiet hours, identity configuration, manager handoff for ambiguous requests.",
+			"Conversation memory tracks participants, ongoing topics, facts learned, open questions, and shared links across sessions.",
+			"Both modes must obey externalActions permission, platform rules, and stop on CAPTCHA, moderation warnings, or permission denial.",
+		],
+	},
+	{
+		id: "linkedin-docs",
+		title: "LinkedIn campaigns",
+		body: [
+			"Stratum includes two types of autonomous LinkedIn campaigns: content posting and connection building. Both run through the browser agent using configured LinkedIn credentials.",
+			"Posting campaigns schedule autonomous posts on a recurring basis. The reviewer selects draft topics and the runtime can generate image assets. Each post is verified after publishing. Connection campaigns start from LinkedIn My Network or search results and send bulk connection requests to relevant profiles with optional personalized notes.",
+		],
+		points: [
+			"Posting campaigns: schedule posts with configurable frequency (max 6 per day, min 4 hours apart). Reviewer selects topics. Runtime can generate images. Every post is verified.",
+			"Connection campaigns: start from LinkedIn My Network growth page or custom search URLs. Send verified connection requests with optional note templates.",
+			"Campaigns respect quiet hours, pause on account warnings, CAPTCHA, permission denial, rate limits, or missing login.",
+			"Use create_linkedin_trial_campaign and create_linkedin_connection_campaign to start campaigns.",
+			"Inspect active campaigns with list_linkedin_trial_campaigns / list_linkedin_connection_campaigns and pause with the corresponding pause commands.",
+			"All LinkedIn actions are browser-automated through the built-in browser agent.",
+		],
+	},
+	{
 		id: "project-memory",
 		title: "Project memory",
 		body: [
@@ -888,6 +961,40 @@ const docsSections = [
 			"Screenshot evidence makes UI review more concrete than a text-only summary.",
 			"Browser navigation timeouts are mechanical failures and can be retried.",
 			"Layout, copy, or design problems should be repaired by adapting the prompt, not blind retry.",
+		],
+	},
+	{
+		id: "browser-agent-docs",
+		title: "Browser agent",
+		body: [
+			"The browser agent is Stratum's autonomous web automation system. Unlike the basic browser panel which shows a page, the browser agent can run complete multi-step workflows: navigate, click, type, scroll, wait, extract text, take screenshots, and verify results.",
+			"The agent uses two modes: built_in (Stratum's own browser profile) and personal (the user's own browser tab via a browser extension). Personal mode requires the extension to be connected and a tab to be assigned.",
+		],
+		points: [
+			"Run with run_browser_task: give the agent a complete workflow description and it executes the steps autonomously.",
+			"Actions include: navigate, click, double-click, right-click, type, keypress, scroll, hover, drag, select option, check, uncheck, upload, switch tabs, accept/dismiss dialogs, wait, and screenshot.",
+			"Built-in mode uses a persistent isolated browser profile. Personal mode uses the user's logged-in browser tab for authenticated sessions.",
+			"The agent observes the page state through accessibility trees and extracts interactive elements with labels, roles, and bounds.",
+			"Each action can be verified — the agent can check whether the expected page change occurred before proceeding.",
+			"Useful for: form submissions, multi-page research, login workflows, deployment verification, and content publishing.",
+			"Stop running agents with stop_automation and monitor progress with get_automation_status.",
+		],
+	},
+	{
+		id: "desktop-automation-docs",
+		title: "Desktop automation",
+		body: [
+			"Desktop automation lets Stratum control native operating system applications, not just websites. This is powered by Open Computer Use, which gives the agent the ability to see the desktop, launch apps, click buttons, type text, and observe application state.",
+			"This is especially useful for workflows that involve native tools: installers, desktop IDEs, file managers, system settings, terminal-based tools, and any application without a web interface.",
+		],
+		points: [
+			"Run with run_desktop_task: describe the desktop workflow and the agent executes it through OS-level observation and interaction.",
+			"Actions include: list apps, launch app, focus app, close app, observe screen, click, type text, press keys, scroll, drag, and wait.",
+			"The agent observes the desktop via screenshots and accessibility trees, identifying interactive elements by their labels and roles.",
+			"Platform support: Windows (native Open Computer Use), macOS (helper app), Linux (limited support).",
+			"Safety features: desktop safety checks, configurable observation permissions, and abort controls.",
+			"Do not use desktop automation for websites — use the browser agent instead for web tasks.",
+			"Use the desktop doctor utility to verify the setup is working before running automation tasks.",
 		],
 	},
 	{
@@ -1105,6 +1212,71 @@ const docsSections = [
 		],
 	},
 	{
+		id: "code-indexing-docs",
+		title: "Code indexing",
+		body: [
+			"Stratum builds project-local code indexes under .stratum/index/ to accelerate code understanding. The index contains files, symbols, import/export edges, references, and call graphs for TypeScript, JavaScript, and Python files in the selected project.",
+			"Instead of reading every file to answer a code question, the manager can query the index to find relevant symbols, files, and relationships first, then read only the specific code spans that matter.",
+		],
+		points: [
+			"refresh_code_index — rebuild the local index when files change or results look stale.",
+			"find_symbol — search for functions, classes, interfaces, constants, and types by name.",
+			"find_references / find_imports — find where a symbol is used or imported across the project.",
+			"find_callers / find_callees — navigate the call graph to understand execution flow.",
+			"retrieve_code_context — get the most relevant code spans for a task in one request, combining symbol search, file matches, imports, and calls.",
+			"remember_code_discovery — save verified code facts into the index for future retrieval.",
+			"Indexes are stored per-project and survive restarts. Refresh only when files change.",
+		],
+	},
+	{
+		id: "skills-docs",
+		title: "Skills",
+		body: [
+			"Skills are reusable Markdown documents stored in .stratum/skills/ that teach the manager and workers how to handle specific tasks, follow project conventions, or execute repeatable procedures. They act as a shared playbook that agents can read and apply.",
+			"When a manager encounters a pattern it recognizes — building an installer, formatting a release note, verifying a deployment — it can read the relevant skill and follow its steps rather than reasoning from scratch each time.",
+		],
+		points: [
+			"create_or_update_skill — save a new skill or update an existing one with current procedures.",
+			"list_skills — discover available skills by title and description.",
+			"read_skill — read a skill's full content to execute its instructions.",
+			"Skills are version-controlled alongside the project in .stratum/skills/*.md.",
+			"Typical skills: browser-automation patterns, platform-specific workflows, build procedures, convention guides.",
+			"The manager should create a skill when it learns a reusable convention, fix pattern, or project rule.",
+		],
+	},
+	{
+		id: "social-skills-docs",
+		title: "Social browser skills",
+		body: [
+			"Stratum includes platform-specific browser skills for social media and community platforms. These are reusable workflows that handle the unique navigation, form interactions, and safety requirements of each platform.",
+			"Before executing actions on Discord, LinkedIn, Reddit, or Meta Business Suite, the agent reads the matching skill to understand the correct UI workflow, authentication state, submission forms, and verification steps.",
+		],
+		points: [
+			"Reddit: uses old Reddit by default for reading, posting, commenting, and moderation. New Reddit is used only for chat/DMs or media-heavy flows.",
+			"Discord: browser-based Discord interaction for reading channels, sending messages, and managing communities.",
+			"LinkedIn: browser-based publishing and connection workflows with safety checks for account warnings and rate limits.",
+			"Meta Business Suite: browser-based publishing for Facebook and Instagram business pages.",
+			"Each skill includes: prerequisite checks, login/authentication verification, form target selectors, content formatting rules, and post-publishing verification.",
+			"All social actions respect externalActions permission and stop on CAPTCHA, permission denial, or platform warnings.",
+		],
+	},
+	{
+		id: "remote-manager-docs",
+		title: "Remote manager",
+		body: [
+			"The remote manager system lets external devices and services interact with a running Stratum session. Through the Telegram gateway and the remote manager API, users can send prompts, check status, receive notifications, and control runs without being at the desktop.",
+			"The Telegram gateway pairs a bot with the Stratum instance. Once paired, the user can send messages to the bot which are forwarded to the manager chat, receive project files, and get notified of important events.",
+		],
+		points: [
+			"Telegram gateway: configure a bot token, create a pairing code, and send/receive messages from your Telegram account.",
+			"Remote manager API: send prompts to the manager, request status snapshots, control runs (pause/resume/stop).",
+			"Receive file output remotely with send_remote_file — useful for reviewing generated artifacts on mobile.",
+			"Remote interaction requests: approve or deny permission requests from the manager remotely.",
+			"All remote actions respect the same permissions, quotas, and access controls as local sessions.",
+			"The monitor backdoor API (http://127.0.0.1:3001/api/status) also provides read-only remote access to run state.",
+		],
+	},
+	{
 		id: "admin-quotas",
 		title: "Admin and quotas",
 		body: [
@@ -1140,11 +1312,11 @@ const docsSections = [
 		id: "press",
 		title: "Press",
 		body: [
-			"Stratum is a Windows & Mac desktop app for manager-led AI workspaces. It combines a manager chat, visible worker lanes, project memory, Git review, LaTeX editing, browser verification, model routing, and release tooling for supervised long-running research/build work.",
+			"Stratum is a Windows, Mac & Linux desktop app for manager-led AI workspaces. It combines a manager chat, visible worker lanes, project memory, Git review, LaTeX editing, browser verification, model routing, and release tooling for supervised long-running research/build work.",
 		],
 		points: [
 			"Category: AI workspace / agent orchestration desktop app.",
-			"Platform: Windows & Mac.",
+			"Platform: Windows, Mac & Linux.",
 			"Primary users: researchers, builders, technical writers, and small labs running long tasks.",
 			"Positioning: a workspace around model execution, not another single chat UI.",
 		],
@@ -1262,7 +1434,7 @@ const docsSections = [
 	},
 	{
 		id: "v1-0-0",
-		title: "Stratum 1.0.0 Latest",
+		title: "Stratum 1.0.0",
 		body: [
 			"This release brings Stratum to 1.0.0 across Windows and macOS, syncing the current desktop core and making the app feel much closer to a real multi-agent coding workspace. It adds code indexing, cleaner Manager tool summaries, visible subagent/specialist-agent cards, safer rollback/checkpoint handling, remote Manager groundwork, and major chat UI polish.",
 		],
@@ -1298,10 +1470,25 @@ const docsSections = [
 			"Changed: Release asset naming now uses platform-specific 1.0.0 installer names.",
 			"Notes: Windows installer asset: stratum-setup.exe. macOS Silicon installer asset: stratum-1.0.0-mac-arm64.dmg. Windows version: 1.0.0. macOS version: 1.0.0. GitHub CI: passed. macOS installer workflow: passed.",
 		],
+	},
+	{
+		id: "v1-0-1",
+		title: "Stratum 1.0.1 Latest",
+		body: [
+			"This release adds Linux platform support alongside Windows and macOS, making Stratum available across all three major desktop platforms. It also includes UI polish for the Features page, responsive fixes for the footer, updated homepage metrics, and improved dropdown/sidebar layouts.",
+		],
+		points: [
+			"Linux desktop support — Stratum now ships a Linux AppImage installer alongside the existing Windows and macOS builds.",
+			"Platform references updated across the website — all download pages, CTAs, hero sections, and documentation now list Linux as a supported platform.",
+			"Features page hover carousel — the Surface groups section now uses a single fullscreen carousel overlay instead of three separate popups on hover.",
+			"Footer CTA responsiveness — fixed horizontal overflow of the download card at tablet and narrow viewport widths with improved grid and button containment.",
+			"Homepage metrics — updated visible workers count to 11 and project tokens tracked to 22B.",
+			"Resources dropdown width — expanded the header Resources menu to better accommodate long description text without overflow.",
+			"Docs sidebar layout — increased sidebar column width and improved text wrapping for navigation items.",
+			"Notes: Windows installer asset: stratum-setup.exe. macOS Silicon installer asset: stratum-1.0.1-mac-arm64.dmg. Linux installer asset: stratum-1.0.1-linux-x86_64.AppImage.",
+		],
 	}
-];
-
-function routeFromLocation() {
+];function routeFromLocation() {
 	const path = window.location.pathname.replace(/\/+$/, "") || "/";
 	if (path === "/features") return "features";
 	if (path === "/use-cases") return "useCases";
@@ -2028,7 +2215,7 @@ function DownloadCTA({ onNavigate }) {
 			<div className="cta-inner">
 				<span className="cta-beam" aria-hidden="true" />
 				<div>
-					<p className="eyebrow">Windows &amp; Mac desktop</p>
+					<p className="eyebrow">Windows, Mac &amp; Linux</p>
 					<h2>Install the workspace for supervised long-running research and build work.</h2>
 				</div>
 				<Magnetic>
@@ -2046,7 +2233,7 @@ function HeroIntro({ onNavigate }) {
 		<div className="hero-copy" onClick={onNavigate}>
 			<p className="hero-eyebrow">
 				<span className="pulse-dot" aria-hidden="true" />
-				Stratum 1.0 — now on Windows &amp; macOS
+				Stratum 1.0.1 — now on Windows, Mac &amp; Linux
 			</p>
 			<h1>
 				Manager-led AI workspaces for <em>long-running</em> projects.
@@ -2057,7 +2244,7 @@ function HeroIntro({ onNavigate }) {
 			<div className="hero-actions">
 				<Magnetic>
 					<a className="primary-action" href="/download" data-route>
-						Download for Windows &amp; Mac
+						Download for Windows, Mac &amp; Linux
 					</a>
 				</Magnetic>
 				<a className="secondary-action" href="/features" data-route>
@@ -2333,10 +2520,10 @@ function Download() {
 			<ThreeCanvas scene="mountOrbScene" className="download-canvas" />
 			<div className="download-panel">
 				<img src="/assets/app-logo.png" alt="Stratum logo" />
-				<p className="eyebrow">Windows & Mac installer</p>
-				<h1>Download Stratum for Windows & Mac</h1>
+				<p className="eyebrow">Windows, Mac & Linux installer</p>
+				<h1>Download Stratum for Windows, Mac & Linux</h1>
 				<p>
-					This installer includes the current Stratum desktop build. Windows and Mac installers are ready for daily use.
+					This installer includes the current Stratum desktop build. Windows, Mac and Linux installers are ready for daily use.
 				</p>
 				<div className="download-buttons">
 					<a className="download-button" href="https://github.com/Kushalk0677/stratum/releases/latest/download/stratum-setup.exe">
@@ -2345,10 +2532,14 @@ function Download() {
 					<a className="download-button" href="https://github.com/Kushalk0677/stratum/releases/latest/download/stratum-mac-arm64.dmg">
 						Download for Mac (ARM64)
 					</a>
+					<a className="download-button" href="https://github.com/Kushalk0677/stratum/releases/latest/download/stratum-setup.exe">
+						Download for Linux
+					</a>
 				</div>
 				<div className="download-notes">
 					<span>Platform: Windows x64</span>
 					<span>Platform: macOS Apple Silicon (ARM64)</span>
+					<span>Platform: Linux (AppImage)</span>
 					<span>Publisher label: kushalk0677</span>
 					<span>Installer type: NSIS</span>
 				</div>
@@ -2557,8 +2748,8 @@ function Footer({ onNavigate }) {
 				</a>
 			</nav>
 			<div className="footer-cta">
-				<strong>Windows & Mac</strong>
-				<p>Download Stratum for Windows & Mac.</p>
+				<strong>Windows, Mac & Linux</strong>
+				<p>Download Stratum for Windows, Mac & Linux.</p>
 				<a className="primary-action" href="/download" data-route>
 					Download
 				</a>

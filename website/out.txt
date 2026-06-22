@@ -1,0 +1,2 @@
+Last Notes: Notes: Windows installer asset: stratum-setup.exe. macOS (Silicon) installer asset: stratum-mac-arm6
+Has v1-0-0: false
