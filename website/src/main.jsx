@@ -2548,9 +2548,14 @@ function Download() {
 					<a className="download-button" href="https://github.com/Kushalk0677/stratum/releases/latest/download/stratum-mac-arm64.dmg">
 						Download for Mac (ARM64)
 					</a>
-					<a className="download-button" href="https://github.com/Kushalk0677/stratum/releases/latest/download/stratum-linux-x86_64.AppImage">
-						Download for Linux
-					</a>
+					<div className="download-linux-row">
+						<a className="download-button" href="https://github.com/Kushalk0677/stratum/releases/latest/download/stratum-linux-amd64.deb">
+							Download .deb
+						</a>
+						<a className="download-button" href="https://github.com/Kushalk0677/stratum/releases/latest/download/stratum-linux-x86_64.AppImage">
+							Download .AppImage
+						</a>
+					</div>
 				</div>
 				<div className="download-notes">
 					<span>Platform: Windows x64</span>

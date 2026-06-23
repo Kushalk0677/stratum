@@ -3017,6 +3017,12 @@ main {
 	margin-top: 6px;
 }
 
+.download-linux-row {
+	display: flex;
+	flex-wrap: nowrap;
+	gap: 12px;
+}
+
 .download-button {
 	display: inline-flex;
 	align-items: center;
