@@ -1475,20 +1475,36 @@ const docsSections = [
 		id: "v1-0-1",
 		title: "Stratum 1.0.1 Latest",
 		body: [
-			"This release adds Linux platform support alongside Windows and macOS, making Stratum available across all three major desktop platforms. It also includes UI polish for the Features page, responsive fixes for the footer, updated homepage metrics, and improved dropdown/sidebar layouts.",
+			"This release adds Linux platform support alongside Windows and macOS, making Stratum available across all three major desktop platforms. It also introduces a browser automation agent, desktop automation via Open Computer Use, watchers and conversation agents, a skills system, reminder scheduling, a remote manager API with Telegram gateway, LinkedIn campaign support, cross-platform social browser skills, and expanded code indexing tooling.",
 		],
 		points: [
-			"Linux desktop support — Stratum now ships a Linux AppImage installer alongside the existing Windows and macOS builds.",
-			"Platform references updated across the website — all download pages, CTAs, hero sections, and documentation now list Linux as a supported platform.",
-			"Features page hover carousel — the Surface groups section now uses a single fullscreen carousel overlay instead of three separate popups on hover.",
-			"Footer CTA responsiveness — fixed horizontal overflow of the download card at tablet and narrow viewport widths with improved grid and button containment.",
-			"Homepage metrics — updated visible workers count to 11 and project tokens tracked to 22B.",
-			"Resources dropdown width — expanded the header Resources menu to better accommodate long description text without overflow.",
-			"Docs sidebar layout — increased sidebar column width and improved text wrapping for navigation items.",
-			"Notes: Windows installer asset: stratum-setup.exe. macOS Silicon installer asset: stratum-1.0.1-mac-arm64.dmg. Linux installer asset: stratum-1.0.1-linux-x86_64.AppImage.",
+			"Linux desktop support — Stratum now ships a Linux AppImage installer alongside the existing Windows and macOS builds. The Linux build uses the same Electron-based desktop core for feature parity across all platforms.",
+			"",
+			"Browser automation agent — full autonomous web automation via run_browser_task. Supports navigation, click, double-click, right-click, type, keypress, scroll, hover, drag, select option, check, uncheck, upload, tab management (open/switch/close), accept/dismiss dialogs, wait, and screenshot actions. Each action can be verified against expected page state before proceeding. Two modes: built_in (persistent isolated browser profile) and personal (user's own browser tab via extension). The agent observes pages through accessibility trees and extracts interactive elements with labels, roles, and bounds.",
+			"Desktop automation — native OS application control via Open Computer Use with run_desktop_task. Supports list apps, launch app, focus app, close app, observe screen, click, type text, press keys, scroll, drag, and wait. The agent observes the desktop via screenshots and accessibility trees. Platform support: Windows (native driver), macOS (helper app), Linux (limited). Includes a desktop doctor utility to verify setup.",
+			"Watchers and conversation agents — two autonomous modes for online communities. Watchers monitor Discord channels, Reddit threads, or web pages for content changes and queue activity for the Manager. Active conversation agents remain resident in the browser with their own transcript and model calls, replying autonomously within configured scope. Features include per-platform conversation memory (participants, topics, facts learned, open questions), daily reply caps, quiet hours, identity configuration, and manager handoff for ambiguous requests. Both modes respect externalActions permission and stop on CAPTCHA, moderation warnings, or permission denial.",
+			"Skills system — reusable Markdown instructions stored in .stratum/skills/*.md. create_or_update_skill saves reusable procedures, list_skills discovers available skills by title and description, read_skill loads the full content for execution. Skills act as a shared playbook for browser-automation patterns, platform-specific workflows, build procedures, and convention guides.",
+			"Reminder scheduler — one-time and recurring reminders via create_reminder, list_reminders, and delete_reminder. Reminders autowake the Manager chat when due, enabling scheduled checks, recurring workflows, experiment monitoring, and follow-up tasks. Persist across app restarts and support configurable repeat intervals.",
+			"Remote Manager API — external devices can send prompts to the Manager, request status snapshots (Manager state, worker states, run envelope, terminal, project path), and send control actions (status, stop, project, chat, new, workers, todos, model, goal-pause, goal-resume, goal-end). Transport-agnostic design supports Android, Telegram, and internal transports.",
+			"Telegram gateway — pair a Telegram bot with the Stratum instance via createPairing. Once paired, users can send messages to the bot that are forwarded to the Manager chat, receive project files remotely via send_remote_file, and get notified of important events. Supports configure, test, remove owner, and status check operations.",
+			"LinkedIn campaigns — two autonomous campaign types. Posting campaigns schedule content with configurable frequency (max 6 per day, min 4 hours apart), reviewer-selected topics, runtime-generated image assets, and post-publishing verification. Connection campaigns start from LinkedIn My Network or search results and send verified connection requests with optional personalized note templates. Both respect quiet hours and pause on account warnings, CAPTCHA, rate limits, or missing login.",
+			"Social browser skills — platform-specific browser workflows for Reddit (old Reddit default for reading, posting, commenting, moderation; new Reddit for chat/DMs and media), Discord (channel reading, message sending, community management), LinkedIn (publishing and connection workflows with safety checks), and Meta Business Suite (Facebook and Instagram business page publishing). Each skill includes prerequisite checks, authentication verification, form target selectors, content formatting rules, and post-publishing verification.",
+			"Code indexing tools — expanded toolset for project-local code understanding: find_symbol searches functions, classes, interfaces, constants, and types; find_references and find_imports trace cross-file usage; find_callers and find_callees navigate call graphs; retrieve_code_context combines symbol search, file matches, imports, and calls into one request; remember_code_discovery saves verified code facts for future retrieval.",
+			"",
+			"Fixed: Linux build pipeline — added electron-builder Linux target (AppImage) with CI workflow for automated builds.",
+			"Fixed: Cross-platform version alignment — Windows, macOS, and Linux builds now all share Stratum 1.0.1 core.",
+			"Fixed: Automation agent crash recovery — browser and desktop automation agents recover more gracefully from navigation timeouts and observation failures.",
+			"Fixed: Conversation agent state persistence — watcher and conversation agent state is preserved across app restarts.",
+			"",
+			"Changed: Version bumped from 1.0.0 to 1.0.1.",
+			"Changed: Release asset naming now platform-specific — Linux AppImage added alongside existing Windows and macOS installers.",
+			"",
+			"Notes: Windows installer asset: stratum-setup.exe. macOS Silicon installer asset: stratum-1.0.1-mac-arm64.dmg. Linux installer asset: stratum-1.0.1-linux-x86_64.AppImage. Windows version: 1.0.1. macOS version: 1.0.1. Linux version: 1.0.1.",
 		],
 	}
-];function routeFromLocation() {
+];
+
+function routeFromLocation() {
 	const path = window.location.pathname.replace(/\/+$/, "") || "/";
 	if (path === "/features") return "features";
 	if (path === "/use-cases") return "useCases";
@@ -1616,8 +1632,8 @@ function ProductOS() {
 					<strong>stratum</strong>
 				</div>
 				<div className="desktop-status">
-					<span>5 agents</span>
-					<span>180M tokens</span>
+					<span>11 workers</span>
+					<span>22B tokens</span>
 					<span>ctx 42k/128k</span>
 				</div>
 				<span className="desktop-path">C:\research\shadowkv</span>
@@ -2532,7 +2548,7 @@ function Download() {
 					<a className="download-button" href="https://github.com/Kushalk0677/stratum/releases/latest/download/stratum-mac-arm64.dmg">
 						Download for Mac (ARM64)
 					</a>
-					<a className="download-button" href="https://github.com/Kushalk0677/stratum/releases/latest/download/stratum-setup.exe">
+					<a className="download-button" href="https://github.com/Kushalk0677/stratum/releases/latest/download/stratum-linux-x86_64.AppImage">
 						Download for Linux
 					</a>
 				</div>
